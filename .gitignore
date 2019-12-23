@@ -5,3 +5,4 @@
 /target
 *.swap
 *.kdev4
+/src/config/ui*.h

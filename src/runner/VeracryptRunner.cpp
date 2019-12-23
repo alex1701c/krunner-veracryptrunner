@@ -48,4 +48,3 @@ void VeracryptRunner::Run(const QString &id, const QString &actionId) {
     std::cout << "Running:" << qPrintable(id) << ":" << qPrintable(actionId) << std::endl;
     std::cout.flush();
 }
-

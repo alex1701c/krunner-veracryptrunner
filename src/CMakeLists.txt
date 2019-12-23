@@ -15,3 +15,5 @@ install(FILES runner/veracryptrunner2.desktop DESTINATION ~/.local/share/kservic
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     install(TARGETS veracryptrunner DESTINATION ~/.config/autostart-scripts/)
 endif()
+
+add_subdirectory(config)
