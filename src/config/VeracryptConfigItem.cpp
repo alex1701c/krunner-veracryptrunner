@@ -1,3 +1,4 @@
+//  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #include <QtWidgets/QFileDialog>
 #include <QDebug>
 #include <QtWidgets/QMessageBox>
@@ -11,8 +12,12 @@
 VeracryptConfigItem::VeracryptConfigItem(QWidget *parent, VeracryptVolume *volume) : QWidget(parent) {
     setupUi(this);
     this->volume = volume;
+    this->nameExistsInfoLabel->setHidden(true);
     initializeValues();
+
     connect(this->nameLineEdit, &QLineEdit::textChanged, this, &VeracryptConfigItem::changed);
+    // To validate duplicate names
+    connect(this->nameLineEdit, &QLineEdit::textChanged, this, &VeracryptConfigItem::nameChanged);
     // Delete Signals
     connect(this->deleteConfigButton, &QPushButton::clicked, this, &VeracryptConfigItem::deleteConfig);
     connect(this->deleteConfigButton, &QPushButton::clicked, this, &VeracryptConfigItem::changed);
@@ -22,7 +27,7 @@ VeracryptConfigItem::VeracryptConfigItem(QWidget *parent, VeracryptVolume *volum
     connect(this->moveDown, &QPushButton::clicked, this, &VeracryptConfigItem::moveItemDown);
     connect(this->moveDown, &QPushButton::clicked, this, &VeracryptConfigItem::changed);
     // Connect type signals
-    connect(this->fileRadioButton, &QRadioButton::clicked, this, &VeracryptConfigItem::changed);
+    connect(this->fileRadioButton, &QRadioButton::clicked, this, &VeracryptConfigItem::toggleVolumeSource);
     connect(this->deviceRadioButton, &QRadioButton::clicked, this, &VeracryptConfigItem::toggleVolumeSource);
     connect(this->fileRadioButton, &QRadioButton::clicked, this, &VeracryptConfigItem::changed);
     connect(this->deviceRadioButton, &QRadioButton::clicked, this, &VeracryptConfigItem::changed);
@@ -52,9 +57,7 @@ void VeracryptConfigItem::toggleVolumeSource() {
 }
 
 void VeracryptConfigItem::initializeValues() {
-    this->nameLineEdit->setText(volume->name.isEmpty() ? QStringLiteral("New Volume ") + QString::number(volume->id) : volume->name);
-    this->idLabel->setText(QString::number(volume->id));
-    this->idLabel->hide();
+    this->nameLineEdit->setText(volume->name.isEmpty() ? QStringLiteral("New Volume") : volume->name);
     // Initialize type and source
     bool fileType = this->volume->type == QStringLiteral("FILE");
     if (fileType) {
@@ -74,7 +77,7 @@ void VeracryptConfigItem::initializeValues() {
 
     // Location and Pass paths
     this->mountPath->setText(
-            volume->mountPath.isEmpty() ? QStringLiteral("/media/veracrypt") % QString::number(volume->id) : volume->mountPath);
+            volume->mountPath.isEmpty() ? QStringLiteral("/media/veracrypt") : volume->mountPath);
     this->passIntegration->setText(volume->passPath);
 }
 

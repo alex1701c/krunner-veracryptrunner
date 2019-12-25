@@ -1,3 +1,4 @@
+//  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #include "veracryptrunner_config.h"
 #include "VeracryptConfigItem.h"
 #include <KSharedConfig>
@@ -7,15 +8,11 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 
-
 K_PLUGIN_FACTORY(VeracryptRunnerConfigFactory, registerPlugin<VeracryptRunnerConfig>("kcm_krunner_veracryptrunner2");)
-// TODO Get rid of id and use name as identifier
-
 
 VeracryptRunnerConfigForm::VeracryptRunnerConfigForm(QWidget *parent) : QWidget(parent) {
     setupUi(this);
 }
-
 
 VeracryptRunnerConfig::VeracryptRunnerConfig(QWidget *parent, const QVariantList &args) : KCModule(parent, args) {
     m_ui = new VeracryptRunnerConfigForm(this);
@@ -43,7 +40,6 @@ void VeracryptRunnerConfig::load() {
     validateMoveButtons();
 }
 
-
 void VeracryptRunnerConfig::save() {
     QList<VeracryptConfigItem *> configItemsUi;
     const int itemCount = m_ui->veracryptVolumes->count();
@@ -54,9 +50,21 @@ void VeracryptRunnerConfig::save() {
     for (const auto &volumeGroupName:config.groupList().filter(QRegExp(R"(^(?!General$).*$)"))) {
         config.group(volumeGroupName).deleteGroup();
     }
+    QStringList savedNames;
     for (auto *item:configItemsUi) {
-        auto group = config.group(item->nameLineEdit->text());
-        group.writeEntry("id", item->idLabel->text());
+        QString name = item->nameLineEdit->text();
+        if (savedNames.contains(name)) {
+            // Add number to name if it is already taken and the warning is ignored
+            for (int i = 1; i < 11; ++i) {
+                QString _name = name + QString::number(i);
+                if (!savedNames.contains(_name)) {
+                    name = _name;
+                    i = 11;
+                }
+            }
+        }
+        savedNames.append(name);
+        auto group = config.group(name);
         group.writeEntry("priority", 100 - configItemsUi.indexOf(item));
         group.writeEntry("type", item->fileRadioButton->isChecked() ? "FILE" : "DEVICE");
         group.writeEntry("source", item->fileRadioButton->isChecked() ? item->filePushButton->text().remove('&') :
@@ -75,10 +83,6 @@ void VeracryptRunnerConfig::defaults() {
 }
 
 void VeracryptRunnerConfig::addVeracryptItem(VeracryptVolume *volume, bool validate) {
-    if (volume->id == -1) {
-        volume->id = manager.config.group("General").readEntry("id", "1").toInt();
-        manager.config.group("General").writeEntry("id", volume->id + 1);
-    }
     auto *element = new VeracryptConfigItem(this, volume);
     m_ui->veracryptVolumes->insertWidget(0, element);
     connect(element, &VeracryptConfigItem::changed, this,
@@ -86,7 +90,11 @@ void VeracryptRunnerConfig::addVeracryptItem(VeracryptVolume *volume, bool valid
     connect(element, &VeracryptConfigItem::confirmedDelete, this, &VeracryptRunnerConfig::confirmedDeleteOfItem);
     connect(element, &VeracryptConfigItem::moveItemUp, this, &VeracryptRunnerConfig::moveItemUp);
     connect(element, &VeracryptConfigItem::moveItemDown, this, &VeracryptRunnerConfig::moveItemDown);
-    if (validate) validateMoveButtons();
+    connect(element, &VeracryptConfigItem::nameChanged, this, &VeracryptRunnerConfig::validateDuplicateNames);
+    if (validate) {
+        emit element->nameChanged();
+        validateMoveButtons();
+    }
 }
 
 void VeracryptRunnerConfig::addVeracryptItem() {
@@ -127,6 +135,18 @@ void VeracryptRunnerConfig::validateMoveButtons() {
     }
 }
 
+void VeracryptRunnerConfig::validateDuplicateNames() {
+    const auto *senderItem = reinterpret_cast<VeracryptConfigItem *>(sender());
+    const int itemCount = m_ui->veracryptVolumes->count();
+    QStringList names;
+
+    for (int i = 0; i < itemCount; ++i) {
+        const auto *item = reinterpret_cast<VeracryptConfigItem *>( m_ui->veracryptVolumes->itemAt(i)->widget());
+        if (item != senderItem) {
+            names.append(item->nameLineEdit->text());
+        }
+    }
+    senderItem->nameExistsInfoLabel->setHidden(!names.contains(senderItem->nameLineEdit->text()));
+}
 
 #include "veracryptrunner_config.moc"
-

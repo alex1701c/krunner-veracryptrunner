@@ -1,3 +1,4 @@
+//  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #pragma once
 
 #include "VeracryptConfigItem.h"
@@ -20,7 +21,7 @@ Q_OBJECT
 public:
     explicit VeracryptRunnerConfig(QWidget *parent = nullptr, const QVariantList &args = QVariantList());
 
-    virtual ~VeracryptRunnerConfig();
+    ~VeracryptRunnerConfig() override;
 
     VeracryptVolumeManager manager;
 
@@ -51,6 +52,8 @@ public Q_SLOTS:
     void moveItemDown();
 
     void validateMoveButtons();
+
+    void validateDuplicateNames();
 
 private:
     QList<VeracryptVolume *> volumes;

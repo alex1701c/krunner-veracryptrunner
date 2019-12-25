@@ -1,3 +1,4 @@
+//  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #pragma once
 
 #include <QtCore/QString>
@@ -11,7 +12,6 @@ enum VolumeType {
 class VeracryptVolume {
 
 public:
-    int id = -1;
     int priority = 0;
     QString name;
     QString type;

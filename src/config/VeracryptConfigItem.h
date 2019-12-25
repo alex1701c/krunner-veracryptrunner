@@ -1,3 +1,4 @@
+//  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #pragma once
 
 #include "ui_veracryptrunner_config_item.h"
@@ -45,5 +46,7 @@ Q_SIGNALS:
     void moveItemDown();
 
     void confirmedDelete();
+
+    void nameChanged();
 };
 

@@ -43,17 +43,16 @@
              </property>
              <property name="icon">
               <iconset theme="delete">
-               <normaloff/>
-              </iconset>
+               <normaloff>.</normaloff>.</iconset>
              </property>
             </widget>
            </item>
           </layout>
          </item>
          <item>
-          <widget class="QLabel" name="idLabel">
+          <widget class="QLabel" name="nameExistsInfoLabel">
            <property name="text">
-            <string/>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#aa0000;&quot;&gt;The name already exists !&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
          </item>
@@ -201,8 +200,7 @@
           </property>
           <property name="icon">
            <iconset theme="arrow-up">
-            <normaloff/>
-           </iconset>
+            <normaloff>.</normaloff>.</iconset>
           </property>
          </widget>
         </item>
@@ -213,8 +211,7 @@
           </property>
           <property name="icon">
            <iconset theme="arrow-down">
-            <normaloff/>
-           </iconset>
+            <normaloff>.</normaloff>.</iconset>
           </property>
          </widget>
         </item>
