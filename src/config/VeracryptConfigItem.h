@@ -38,6 +38,12 @@ public Q_SLOTS:
 public:
 Q_SIGNALS:
 
+    void changed();
+
+    void moveItemUp();
+
+    void moveItemDown();
+
     void confirmedDelete();
 };
 

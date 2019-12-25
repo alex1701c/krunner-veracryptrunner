@@ -20,6 +20,8 @@ Q_OBJECT
 public:
     explicit VeracryptRunnerConfig(QWidget *parent = nullptr, const QVariantList &args = QVariantList());
 
+    virtual ~VeracryptRunnerConfig();
+
     VeracryptVolumeManager manager;
 
 public Q_SLOTS:
@@ -30,7 +32,17 @@ public Q_SLOTS:
 
     void defaults() override;
 
-    void addVeracryptItem(VeracryptVolume *volume = new VeracryptVolume(), bool validate = true);
+    /**
+     * Adds the volume to the UI
+     * @param volume VeracryptVolume which contains the information
+     * @param validate if the move buttons should be validated
+     */
+    void addVeracryptItem(VeracryptVolume *volume, bool validate);
+
+    /**
+     * Overload
+     */
+    void addVeracryptItem();
 
     void confirmedDeleteOfItem();
 
@@ -41,6 +53,7 @@ public Q_SLOTS:
     void validateMoveButtons();
 
 private:
+    QList<VeracryptVolume *> volumes;
     VeracryptRunnerConfigForm *m_ui;
 };
 

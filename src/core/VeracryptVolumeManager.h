@@ -13,22 +13,27 @@ public:
         this->config = KSharedConfig::openConfig("veracryptrunnerrc")->group("Configs");
     }
 
-    QList<VeracryptVolume> getVeracryptVolumes() {
-        QList<VeracryptVolume> volumes;
+    QList<VeracryptVolume*> getVeracryptVolumes() {
+        QList<VeracryptVolume*> volumes;
         for (const auto &volumeName:config.groupList().filter(QRegExp(R"(^(?!General$).*$)"))) {
-            VeracryptVolume volume;
+            auto *volume=new VeracryptVolume();
             KConfigGroup volumeConfig = config.group(volumeName);
-            volume.name = volumeName;
-            volume.id = volumeConfig.readEntry("id").toInt();
-            volume.priority = volumeConfig.readEntry("priority").toInt();
-            volume.type = volumeConfig.readEntry("type");
-            volume.source = volumeConfig.readEntry("source");
-            volume.mountPath = volumeConfig.readEntry("mountPath");
-            volume.keyFiles = volumeConfig.readEntry("keyFiles")
+            volume->name = volumeName;
+            volume->id = volumeConfig.readEntry("id").toInt();
+            volume->priority = volumeConfig.readEntry("priority").toInt();
+            volume->type = volumeConfig.readEntry("type");
+            volume->source = volumeConfig.readEntry("source");
+            volume->mountPath = volumeConfig.readEntry("mountPath");
+            volume->keyFiles = volumeConfig.readEntry("keyFiles")
                     .split(";", QString::SplitBehavior::SkipEmptyParts);
-            volume.passPath = volumeConfig.readEntry("passPath");
+            volume->passPath = volumeConfig.readEntry("passPath");
             volumes.append(volume);
         }
+
+        std::sort(volumes.begin(), volumes.end(), [](VeracryptVolume *volume1, VeracryptVolume *volume2) -> bool {
+            return volume1->priority < volume2->priority;
+        });
+
         return volumes;
     }
 };
