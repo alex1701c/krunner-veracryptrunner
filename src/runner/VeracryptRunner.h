@@ -2,6 +2,8 @@
 #pragma once
 
 #include <QObject>
+#include <core/VeracryptVolume.h>
+#include <core/VeracryptVolumeManager.h>
 #include "dbus_utils.h"
 
 class VeracryptRunner : public QObject {
@@ -17,5 +19,12 @@ public Q_SLOTS:
     RemoteMatches Match(const QString &searchTerm);
 
     void Run(const QString &id, const QString &actionId);
+
+private:
+    QRegExp queryRegex = QRegExp(QStringLiteral(R"(^(?:veracrypt?|vc)(?: (.*))?$)"));
+    VeracryptVolumeManager *manager;
+    bool initialized = false;
+    const QString iconName = QStringLiteral("veracrypt");
+    QList<VeracryptVolume *> volumes;
 };
 

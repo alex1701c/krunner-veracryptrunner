@@ -1,7 +1,7 @@
 set(CMAKE_BINARY_DIR "../bin")
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
-set(veracryptrunner_SRCS main.cpp runner/VeracryptRunner.cpp)
+set(veracryptrunner_SRCS main.cpp runner/VeracryptRunner.cpp core/VolumeCommandBuilder.h)
 
 qt5_add_dbus_adaptor(veracryptrunner_SRCS "/usr/share/dbus-1/interfaces/kf5_org.kde.krunner1.xml" runner/VeracryptRunner.h VeracryptRunner)
 

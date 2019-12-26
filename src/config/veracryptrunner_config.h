@@ -4,6 +4,7 @@
 #include "VeracryptConfigItem.h"
 #include "ui_veracryptrunner_config.h"
 #include <KCModule>
+#include <KSharedConfig>
 #include <KConfigCore/KConfigGroup>
 #include "../core/VeracryptVolume.h"
 #include "../core/VeracryptVolumeManager.h"

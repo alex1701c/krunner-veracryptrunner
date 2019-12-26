@@ -22,14 +22,25 @@ VeracryptRunner::VeracryptRunner() {
 
 RemoteMatches VeracryptRunner::Match(const QString &searchTerm) {
     RemoteMatches ms;
-    if (searchTerm.contains(QLatin1String("hello"))) {
-        RemoteMatch m;
-        m.id = QStringLiteral("id");
-        m.text = QStringLiteral("Hello There!");
-        m.iconName = QStringLiteral("planetkde");
-        m.type = Plasma::QueryMatch::ExactMatch;
-        m.relevance = 0.8;
-        ms.append(m);
+    if (!searchTerm.contains(queryRegex)) {
+        return ms;
+    }
+    if (!initialized) {
+        manager = new VeracryptVolumeManager();
+        volumes = manager->getVeracryptVolumes();
+    }
+    queryRegex.indexIn(searchTerm);
+    const QString volumeQuery = queryRegex.cap(1);
+    for (const auto &volume:volumes) {
+        if (volume->name.contains(volumeQuery, Qt::CaseInsensitive)) {
+            RemoteMatch m;
+            m.id = volume->name;
+            m.text = "Mount Volume: " + volume->name;
+            m.iconName = iconName;
+            m.type = Plasma::QueryMatch::ExactMatch;
+            m.relevance = (float) volumeQuery.size() / volume->name.size();
+            ms.append(m);
+        }
     }
     return ms;
 
