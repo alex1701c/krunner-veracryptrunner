@@ -124,5 +124,4 @@ void VeracryptRunner::loadVolumesFromConfig() {
         qDeleteAll(volumes);
     }
     volumes = manager->getVeracryptVolumesMap();
-
 }

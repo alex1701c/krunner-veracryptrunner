@@ -7,9 +7,12 @@
 #include <QtCore/QFile>
 #include <KNotifications/KNotification>
 #include <QStringBuilder>
+#include <QRegularExpression>
 
 class VolumeCommandBuilder {
 public:
+    static QString hostname;
+
     static void buildUnmountCommand(const VeracryptVolume *volume) {
         QProcess::startDetached("veracrypt", QStringList() << "-d" << volume->source);
     }
@@ -24,11 +27,11 @@ public:
                 return;
             }
         }
-        options.append("--keyfiles");
-        options.append(volume->keyFiles.join(","));
+        options.append(QStringLiteral("--keyfiles"));
+        options.append(volume->keyFiles.join(','));
 
         // Validate source
-        if (volume->source == "Select File" || volume->source == "Select Device") {
+        if (volume->source == QLatin1String("Select File") || volume->source == QLatin1String("Select Device")) {
             showErrorMessage(QStringLiteral("Please select a valid source for the volume!"));
             return;
         } else if (!QFile::exists(volume->source)) {
@@ -36,19 +39,26 @@ public:
             return;
         }
         options.append(volume->source);
-
         options.append(volume->mountPath);
 
-        QProcess::startDetached("veracrypt", options);
-        // TODO Fetch all window isd when the veracrypt and optionally pass windows are open
-        // TODO Make focus on pass wondow only if it exists
+        QProcess::startDetached(QStringLiteral("veracrypt"), options);
 
         // Optional pass integration
         if (!volume->passPath.isEmpty()) {
-            // Gives automatically focus so you can type
-            QProcess::startDetached("sh", QStringList({"-c", "sleep 0.5; wmctrl -a" % getHostName()}));
             QProcess passProcess;
             passProcess.start("pass", QStringList() << "show" << volume->passPath);
+            // Wait for windows to be shown
+            QThread::msleep(750);
+            const QMap<QString, QString> ids = getCurrentWindows(volume->source);
+            if (!ids.contains(QStringLiteral("veracrypt"))) {
+                passProcess.kill();
+                showErrorMessage(QStringLiteral("Could not find Veracrypt Window, proceeding without autotype"));
+            }
+            if (ids.contains(QStringLiteral("pass"))) {
+                // Focus window if it exists
+                QProcess::startDetached("wmctrl", QStringList({"-i", "-a", ids.value("pass")}));
+            }
+
             passProcess.waitForFinished(-1);
             const QString passResults = passProcess.readAllStandardOutput();
             const QString passError = passProcess.readAllStandardError();
@@ -56,17 +66,10 @@ public:
                 showErrorMessage(passError);
             }
             if (!passResults.isEmpty()) {
-                QString password = passResults.split('\n', QString::SkipEmptyParts).at(0);
+                const QString password = passResults.split('\n', QString::SkipEmptyParts).at(0);
                 if (!password.isEmpty()) {
-                    QProcess windowIdProcess;
-                    windowIdProcess.start("xwininfo",
-                                          QStringList({"-name", "Enter password for \"" % volume->source % "\""}));
-                    windowIdProcess.waitForFinished(-1);
-                    QString windowIdRes = windowIdProcess.readAll();
-                    if (windowIdRes.contains(QLatin1String("Window id: "))) {
-                        const auto id = windowIdRes.split(QStringLiteral("Window id: ")).at(1).split(' ').at(0);
-                        QProcess::startDetached("xdotool", QStringList() << "type" << "--window" << id << password);
-                    }
+                    QProcess::startDetached("xdotool",
+                                            QStringList() << "type" << "--window" << ids.value("veracrypt") << password);
                 }
             }
         }
@@ -85,7 +88,45 @@ public:
         QProcess hostNameProces;
         hostNameProces.start("hostname");
         hostNameProces.waitForFinished(-1);
-        return QString(hostNameProces.readAllStandardOutput());
+        return QString(hostNameProces.readAllStandardOutput()).remove('\n');
+    }
+
+    /**
+     * Results are used to determine if there is a pass window that needs to be focused
+     * Additionally it contains the id of the veracrypt window for the autotype feature
+     *
+     * @param volumeSource
+     * @return
+     */
+    static QMap<QString, QString> getCurrentWindows(const QString &volumeSource) {
+        QProcess windowListProcess;
+        windowListProcess.start("wmctrl", QStringList({"-l"}));
+        windowListProcess.waitForFinished(-1);
+        const QString out = windowListProcess.readAllStandardOutput();
+        const QStringList entries = out.split('\n', QString::SkipEmptyParts);
+
+        // Window Id, desktop number, hostname, window name
+        const auto regexStr = QString(R"(^([\w]+)  \d+ (.*))");
+        QRegExp entryRegex(regexStr);
+        QMap<QString, QString> windowsIDs;
+        const auto veracryptWindowContains = QString(QStringLiteral("Enter password for \"") % volumeSource % "\"");
+
+        // Write only the window isd for pass and veracrypt
+        for (const auto &entry:entries) {
+            entryRegex.indexIn(entry);
+            const QString id = entryRegex.cap(1);
+            const QString title = entryRegex.cap(2);
+            if (!id.isEmpty()) {
+                if (title.contains(veracryptWindowContains)) {
+                    windowsIDs.insert("veracrypt", id);
+                } else if (title.endsWith(hostname)) {
+                    windowsIDs.insert("pass", id);
+                }
+            }
+        }
+        return windowsIDs;
     }
 };
 
+// Initialize static variable
+QString VolumeCommandBuilder::hostname = VolumeCommandBuilder::getHostName();
