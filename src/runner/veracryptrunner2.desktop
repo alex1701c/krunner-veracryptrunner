@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=VeracryptRunner DBus
+Name=VeracryptRunner
 Comment=VeracryptRunner KRunner plugin
 X-KDE-ServiceTypes=Plasma/Runner
 Type=Service

@@ -9,6 +9,7 @@ add_executable(veracryptrunner ${veracryptrunner_SRCS})
 target_link_libraries(veracryptrunner
         Qt5::DBus
         KF5::Runner
+        KF5::Notifications
         )
 
 install(FILES runner/veracryptrunner2.desktop DESTINATION ~/.local/share/kservices5/)

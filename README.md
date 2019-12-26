@@ -1,6 +1,6 @@
 ## VeracryptRunner
 
-# Still in development !
+#### This plugin is still in development !
 
 This Krunner plugin allows you to easily mount/unmount configured Veracrypt volumes.
 Additionally it provides pass integration.
@@ -10,16 +10,16 @@ Additionally it provides pass integration.
 ### Required Dependencies
 
 Debian/Ubuntu:  
-`sudo apt install cmake extra-cmake-modules build-essential libkf5runner-dev`  
+`sudo apt install cmake extra-cmake-modules build-essential libkf5runner-dev libkf5notifications-dev`  
 
 openSUSE:  
-`sudo zypper install cmake extra-cmake-modules libQt5Core5 krunner-devel`  
+`sudo zypper install cmake extra-cmake-modules libQt5Core5 krunner-devel knotifications-devel`  
 
 Fedora:  
-`sudo dnf install cmake extra-cmake-modules kf5-krunner-devel`  
+`sudo dnf install cmake extra-cmake-modules kf5-krunner-devel kf5-knotifications-devel`  
 
 Arch (Manjaro):  
-`sudo pacman -S cmake extra-cmake-modules`  
+`sudo pacman -S cmake extra-cmake-modules knotifications`  
 
 ### Build instructions  
 

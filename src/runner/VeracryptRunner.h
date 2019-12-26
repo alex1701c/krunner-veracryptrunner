@@ -25,6 +25,12 @@ private:
     VeracryptVolumeManager *manager;
     bool initialized = false;
     const QString iconName = QStringLiteral("veracrypt");
-    QList<VeracryptVolume *> volumes;
+    QMap<QString, VeracryptVolume *> volumes;
+
+    QStringList mountedVolumes;
+    QTime lastFetched;
+    bool forceFetch = true;
+
+    void fetchMountedVolumes();
 };
 
