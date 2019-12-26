@@ -86,7 +86,9 @@ void VeracryptRunner::Run(const QString &id, const QString &actionId) {
     const auto action = QStringRef(&id, 0, idx);
     const VeracryptVolume *volume = volumes.value(id.mid(idx + 1));
     if (action == QLatin1String("mount")) {
-        VolumeCommandBuilder::buildMountCommand(volume);
+        QTimer::singleShot(0, [volume]() -> void {
+            VolumeCommandBuilder::buildMountCommand(volume);
+        });
     } else {
         VolumeCommandBuilder::buildUnmountCommand(volume);
     }

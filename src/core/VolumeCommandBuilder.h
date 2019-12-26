@@ -40,39 +40,31 @@ public:
         options.append(volume->mountPath);
 
         QProcess::startDetached("veracrypt", options);
+        // TODO Fetch all window isd when the veracrypt and optionally pass windows are open
+        // TODO Make focus on pass wondow only if it exists
 
-        // TODO Refactor using native C/C++ APIS
         // Optional pass integration
         if (!volume->passPath.isEmpty()) {
+            // Gives automatically focus so you can type
+            QProcess::startDetached("sh", QStringList({"-c", "sleep 0.5; wmctrl -a" % getHostName()}));
             QProcess passProcess;
-            system("$(sleep 0.5; wmctrl -a \"$(hostname)\" )&"); // Gives automatically focus so you can type
             passProcess.start("pass", QStringList() << "show" << volume->passPath);
             passProcess.waitForFinished(-1);
             const QString passResults = passProcess.readAllStandardOutput();
             const QString passError = passProcess.readAllStandardError();
-            if (passError.contains(" is not in the password store.")) {
-                // TODO Replace with notification
-                // Show above Veracrypt dialog
-                auto *msgBox = new QMessageBox;
-                msgBox->setParent(nullptr);
-                msgBox->setIcon(QMessageBox::Icon::Critical);
-                msgBox->setWindowTitle("Error");
-                msgBox->setText(passError);
-                msgBox->setWindowFlags(Qt::WindowStaysOnTopHint);
-                msgBox->show();
-                // Focus so you can close the message with Esc/Enter without interacting with the Veracrypt dialog
-                system("$(sleep 0.25; wmctrl -a \"Error — krunner\") &");
+            if (passError.contains(QLatin1String(" is not in the password store."))) {
+                showErrorMessage(passError);
             }
             if (!passResults.isEmpty()) {
                 QString password = passResults.split('\n', QString::SkipEmptyParts).at(0);
                 if (!password.isEmpty()) {
                     QProcess windowIdProcess;
-                    QStringList idOptions({"-name", "Enter password for \"" + volume->source + "\""});
-                    windowIdProcess.start("xwininfo", idOptions);
+                    windowIdProcess.start("xwininfo",
+                                          QStringList({"-name", "Enter password for \"" % volume->source % "\""}));
                     windowIdProcess.waitForFinished(-1);
                     QString windowIdRes = windowIdProcess.readAll();
-                    if (windowIdRes.contains("Window id: ")) {
-                        const auto id = windowIdRes.split("Window id: ").at(1).split(" ").at(0);
+                    if (windowIdRes.contains(QLatin1String("Window id: "))) {
+                        const auto id = windowIdRes.split(QStringLiteral("Window id: ")).at(1).split(' ').at(0);
                         QProcess::startDetached("xdotool", QStringList() << "type" << "--window" << id << password);
                     }
                 }
@@ -87,6 +79,13 @@ public:
                              QStringLiteral("veracrypt")
         );
 
+    }
+
+    static QString getHostName() {
+        QProcess hostNameProces;
+        hostNameProces.start("hostname");
+        hostNameProces.waitForFinished(-1);
+        return QString(hostNameProces.readAllStandardOutput());
     }
 };
 
