@@ -34,6 +34,7 @@ public:
 private:
     QList<VeracryptVolume *> readVolumes() {
         QList<VeracryptVolume *> volumes;
+        config.config()->reparseConfiguration();
         for (const auto &volumeName:config.groupList().filter(QRegExp(R"(^(?!General$).*$)"))) {
             auto *volume = new VeracryptVolume();
             KConfigGroup volumeConfig = config.group(volumeName);

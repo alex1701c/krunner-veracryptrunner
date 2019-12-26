@@ -20,15 +20,24 @@ VeracryptRunner::VeracryptRunner() {
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/veracryptrunner"), this);
 }
 
+VeracryptRunner::~VeracryptRunner() {
+    qDeleteAll(volumes);
+    delete watcher;
+    delete manager;
+}
+
 RemoteMatches VeracryptRunner::Match(const QString &searchTerm) {
     RemoteMatches ms;
     if (!searchTerm.contains(queryRegex)) {
         return ms;
     }
     if (!initialized) {
+        initialized = true;
         manager = new VeracryptVolumeManager();
-        // TODO Implement file watcher
-        volumes = manager->getVeracryptVolumesMap();
+        loadVolumesFromConfig();
+        watcher = new QFileSystemWatcher();
+        watcher->addPath(QDir::homePath() % QStringLiteral("/.config/veracryptrunnerrc"));
+        connect(watcher, &QFileSystemWatcher::fileChanged, this, &VeracryptRunner::configChanged);
     }
     // When the fetch is forced or the last fetch is too old they get refetched
     // With this the volumes are only fetched if the user wants to specifically query this plugin
@@ -41,7 +50,7 @@ RemoteMatches VeracryptRunner::Match(const QString &searchTerm) {
     }
     queryRegex.indexIn(searchTerm);
     const QString volumeQuery = queryRegex.cap(1);
-    for (const auto &volume:volumes) {
+    for (const auto *volume:volumes) {
         if (volume->name.contains(volumeQuery, Qt::CaseInsensitive)) {
             RemoteMatch m;
             if (!mountedVolumes.contains(volume->source)) {
@@ -72,7 +81,8 @@ RemoteActions VeracryptRunner::Actions() {
 }
 
 void VeracryptRunner::Run(const QString &id, const QString &actionId) {
-    int idx = id.indexOf('|');
+    Q_UNUSED(actionId)
+    const int idx = id.indexOf('|');
     const auto action = QStringRef(&id, 0, idx);
     const VeracryptVolume *volume = volumes.value(id.mid(idx + 1));
     if (action == QLatin1String("mount")) {
@@ -80,6 +90,7 @@ void VeracryptRunner::Run(const QString &id, const QString &actionId) {
     } else {
         VolumeCommandBuilder::buildUnmountCommand(volume);
     }
+    forceFetch = true;
 }
 
 void VeracryptRunner::fetchMountedVolumes() {
@@ -99,4 +110,17 @@ void VeracryptRunner::fetchMountedVolumes() {
             }
         }
     }
+}
+
+void VeracryptRunner::configChanged(const QString &fileName) {
+    loadVolumesFromConfig();
+    watcher->addPath(fileName);
+}
+
+void VeracryptRunner::loadVolumesFromConfig() {
+    if (!volumes.isEmpty()) {
+        qDeleteAll(volumes);
+    }
+    volumes = manager->getVeracryptVolumesMap();
+
 }

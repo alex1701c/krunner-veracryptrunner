@@ -59,7 +59,7 @@ void VeracryptConfigItem::toggleVolumeSource() {
 void VeracryptConfigItem::initializeValues() {
     this->nameLineEdit->setText(volume->name.isEmpty() ? QStringLiteral("New Volume") : volume->name);
     // Initialize type and source
-    bool fileType = this->volume->type == QStringLiteral("FILE");
+    bool fileType = this->volume->type == QLatin1String("FILE");
     if (fileType) {
         this->filePushButton->setText(volume->source.isEmpty() ? QStringLiteral("Select File") : volume->source);
     } else {

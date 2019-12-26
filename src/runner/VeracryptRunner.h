@@ -4,6 +4,7 @@
 #include <QObject>
 #include <core/VeracryptVolume.h>
 #include <core/VeracryptVolumeManager.h>
+#include <QtCore/QFileSystemWatcher>
 #include "dbus_utils.h"
 
 class VeracryptRunner : public QObject {
@@ -11,6 +12,8 @@ Q_OBJECT
 
 public:
     explicit VeracryptRunner();
+
+    ~VeracryptRunner() override;
 
 public Q_SLOTS:
 
@@ -20,17 +23,22 @@ public Q_SLOTS:
 
     void Run(const QString &id, const QString &actionId);
 
+    void configChanged(const QString &fileName);
+
 private:
     QRegExp queryRegex = QRegExp(QStringLiteral(R"(^(?:veracrypt?|vc)(?: (.*))?$)"));
     VeracryptVolumeManager *manager;
     bool initialized = false;
     const QString iconName = QStringLiteral("veracrypt");
     QMap<QString, VeracryptVolume *> volumes;
+    QFileSystemWatcher *watcher;
 
     QStringList mountedVolumes;
     QTime lastFetched;
     bool forceFetch = true;
 
     void fetchMountedVolumes();
+
+    void loadVolumesFromConfig();
 };
 
