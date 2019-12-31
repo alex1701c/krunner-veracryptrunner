@@ -15,6 +15,8 @@ public:
 
     ~VeracryptRunner() override;
 
+    void init();
+
 public Q_SLOTS:
 
     RemoteActions Actions();

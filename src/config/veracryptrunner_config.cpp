@@ -1,6 +1,6 @@
 //  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #include "veracryptrunner_config.h"
-#include "VeracryptConfigItem.h"
+#include "../ui/VeracryptConfigItem.h"
 #include <KPluginFactory>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
@@ -43,7 +43,7 @@ void VeracryptRunnerConfig::save() {
     for (int i = 0; i < itemCount; ++i) {
         configItemsUi.append(reinterpret_cast<VeracryptConfigItem *>( m_ui->veracryptVolumes->itemAt(i)->widget()));
     }
-    auto config = KSharedConfig::openConfig("veracryptrunnerrc")->group("Configs");
+    auto config = KSharedConfig::openConfig(QStringLiteral("veracryptrunnerrc"))->group("Configs");
     for (const auto &volumeGroupName:config.groupList().filter(QRegExp(R"(^(?!General$).*$)"))) {
         config.group(volumeGroupName).deleteGroup();
     }

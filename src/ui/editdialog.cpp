@@ -6,10 +6,11 @@
 #include <QDebug>
 #include <QPushButton>
 #include <QStringBuilder>
-#include <config/VeracryptConfigItem.h>
+#include <ui/VeracryptConfigItem.h>
 
 EditDialog::EditDialog(VeracryptVolume *volume, QStringList volumeNames) : QDialog(nullptr) {
     setWindowTitle(QStringLiteral("Veracrypt Runner Edit Config"));
+    setWindowIcon(QIcon::fromTheme(QStringLiteral("veracrypt")));
     auto *layout = new QGridLayout(this);
     item = new VeracryptConfigItem(this, volume);
     item->moveUp->setHidden(true);
@@ -25,7 +26,7 @@ EditDialog::EditDialog(VeracryptVolume *volume, QStringList volumeNames) : QDial
 
     initialName = volume->name;
     this->volume = volume;
-    config = KSharedConfig::openConfig("veracryptrunnerrc")->group("Configs");
+    config = KSharedConfig::openConfig(QStringLiteral("veracryptrunnerrc"))->group("Configs");
     volumeNames.removeOne(initialName);
     this->volumeNames = volumeNames;
 }

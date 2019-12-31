@@ -9,15 +9,15 @@
 #include <QtWidgets/QLabel>
 #include <KNotifications/KNotification>
 #include <core/VeracryptVolume.h>
-#include <config/VeracryptConfigItem.h>
+#include <ui/VeracryptConfigItem.h>
 
 class EditDialog : public QDialog {
 Q_OBJECT
 
 
 public:
+
     /**
-     *
      * @param volume Volume which should be edited
      * @param volumeNames Names of currently loaded volumes
      */
