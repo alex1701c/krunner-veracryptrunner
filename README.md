@@ -1,11 +1,9 @@
 ## VeracryptRunner
 
-#### This plugin is still in development !
-
 This Krunner plugin allows you to easily mount/unmount configured Veracrypt volumes.
 Additionally it provides pass integration.
 
-*This plugin is a rewrite of https://github.com/alex1701c/VeracryptRunner but it uses dbus and is far more optimized*
+*This plugin is a rewrite of https://github.com/alex1701c/VeracryptRunner but it uses dbus, is more optimized and configurable*
 
 ### Required Dependencies
 
@@ -23,20 +21,29 @@ Arch (Manjaro):
 
 ### Build instructions  
 
+The easiest way to install is:  
+`curl https://raw.githubusercontent.com/alex1701c/krunner-veracryptrunner/master/install.sh | bash`  
 ```
-cd /path/to/VeracryptRunner
+git clone https://github.com/alex1701c/krunner-veracryptrunner
+cd krunner-veracryptrunner/
 mkdir build
 cd build
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release  ..
 make
 make install
 kquitapp5 krunner 2> /dev/null; kstart5 --windowclass krunner krunner > /dev/null 2>&1 &
+./bin/veracryptrunner &
 ```
-The `make install` command installs the config file. You have to start the executable manually:  
-`./build/bin/VeracryptRunner`  
-Or you can start the app using your IDE and for example a debugger.
+### Screenshots  
 
-If you want to install the app you have to configure your project differently:
-`cmake -DCMAKE_BUILD_TYPE=Release ..`  
-With this the `make install` command will place the executable in the ~/.config/autostart-scripts/ folder and the build is optimized.
+#### Show options  
+![Show options](https://raw.githubusercontent.com/alex1701c/Screenshots/master/krunner-veracryptrunner/run_options.png)
 
+#### Lauch Veracrypt and fill in password using pass integration  
+![Launch Veracrypt with pass integration](https://raw.githubusercontent.com/alex1701c/Screenshots/master/krunner-veracryptrunner/mount_with_pass_integration.gif)
+
+#### Unmount option
+![Unmount option](https://raw.githubusercontent.com/alex1701c/Screenshots/master/krunner-veracryptrunner/unmount_option.png)
+
+#### Config dialog  
+![Config dialog](https://raw.githubusercontent.com/alex1701c/Screenshots/master/krunner-veracryptrunner/config_overview.png)

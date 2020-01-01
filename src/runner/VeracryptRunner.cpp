@@ -16,7 +16,6 @@
 /**
  * TODO Issue regarding KDE Window system integration
  * TODO Command line interface
- * TODO Add Dependencies/Screenshots
  *
  */
 VeracryptRunner::VeracryptRunner() {
@@ -31,7 +30,7 @@ VeracryptRunner::VeracryptRunner() {
     RemoteAction action;
     action.id = QStringLiteral("exit");
     action.text = QStringLiteral("Edit Entry");
-    action.iconName = QStringLiteral("documentinfo");
+    action.iconName = QStringLiteral("document-edit");
     actions = RemoteActions({action});
 }
 
@@ -110,6 +109,7 @@ void VeracryptRunner::Run(const QString &id, const QString &actionId) {
         }
         forceFetch = true;
     } else {
+        // TODO Having a GUI Application and showing dialog adds much heap
         EditDialog dialog(volume, volumes.keys());
         dialog.exec();
         dialog.deleteLater();

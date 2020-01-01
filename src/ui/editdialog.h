@@ -1,6 +1,5 @@
 //  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
-#ifndef ADDDIALOG_H
-#define ADDDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <utility>
@@ -37,5 +36,3 @@ private slots:
     void changed() { edited = true; };
 
 };
-
-#endif // ADDDIALOG_H
