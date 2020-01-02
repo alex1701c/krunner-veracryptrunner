@@ -1,9 +1,11 @@
 //  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
-#pragma once
+#ifndef VERACRYPT_VOLUME_MANAGER_H
+#define VERACRYPT_VOLUME_MANAGER_H
 
 #include <QDebug>
 #include <KSharedConfig>
 #include <KConfigCore/KConfigGroup>
+#include <QtCore/QProcess>
 #include "VeracryptVolume.h"
 
 class VeracryptVolumeManager {
@@ -11,7 +13,7 @@ public:
     KConfigGroup config;
 
     VeracryptVolumeManager() {
-        this->config = KSharedConfig::openConfig("veracryptrunnerrc")->group("Configs");
+        this->config = KSharedConfig::openConfig(QStringLiteral("veracryptrunnerrc"))->group("Configs");
     }
 
     QMap<QString, VeracryptVolume *> getVeracryptVolumesMap() {
@@ -29,6 +31,25 @@ public:
         });
 
         return volumes;
+    }
+
+    static void fetchMountedVolumes(QStringList &mountedVolumes) {
+        mountedVolumes.clear();
+        QProcess fetchVolumesProcess;
+        fetchVolumesProcess.start(QStringLiteral("veracrypt"),
+                                  QStringList() << QStringLiteral("-t") << QStringLiteral("-l"));
+        fetchVolumesProcess.waitForFinished(-1);
+        const QString res = fetchVolumesProcess.readAll();
+        if (!res.isEmpty()) {
+            for (const auto &mountedVolume:res.split("\n")) {
+                QRegExp pathRegex(QStringLiteral(R"(\d*: ([^ ]+))"));
+                pathRegex.indexIn(mountedVolume);
+                const auto path = pathRegex.cap(1);
+                if (!path.isEmpty()) {
+                    mountedVolumes.append(path);
+                }
+            }
+        }
     }
 
 private:
@@ -52,3 +73,4 @@ private:
     }
 };
 
+#endif // VERACRYPT_VOLUME_MANAGER_H

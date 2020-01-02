@@ -1,5 +1,6 @@
 //  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
-#pragma once
+#ifndef VERACRYPT_VOLUME_H
+#define VERACRYPT_VOLUME_H
 
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -20,4 +21,4 @@ public:
     QStringList keyFiles;
     QString passPath;
 };
-
+#endif // VERACRYPT_VOLUME_H

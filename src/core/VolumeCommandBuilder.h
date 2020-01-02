@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef VOLUME_COMMAND_BUILDER_H
+#define VOLUME_COMMAND_BUILDER_H
+
 #include <QtCore/QProcess>
 #include "VeracryptVolume.h"
 #include <QtCore/QThread>
@@ -8,22 +11,40 @@
 #include <KNotifications/KNotification>
 #include <QStringBuilder>
 #include <QRegularExpression>
+#include <QDebug>
 
 class VolumeCommandBuilder {
 public:
-    static QString hostname;
+    static void buildUnmountCommand(const VeracryptVolume *volume, const bool text = false) {
+        QStringList options;
+        if (text) {
+            options.append(QStringLiteral("--text"));
+        }
+        options.append(QStringLiteral("-d"));
+        options.append(volume->source);
 
-    static void buildUnmountCommand(const VeracryptVolume *volume) {
-        QProcess::startDetached("veracrypt", QStringList() << "-d" << volume->source);
+        if (text) {
+            QProcess process;
+            options.prepend(QStringLiteral("veracrypt"));
+#pragma GCC diagnostic ignored "-Wunused-result"
+            system(qPrintable(options.join(' ')));
+#pragma GCC diagnostic pop
+        } else {
+            QProcess::startDetached(QStringLiteral("veracrypt"), options);
+        }
     }
 
-    static void buildMountCommand(const VeracryptVolume *volume) {
+    static void buildMountCommand(const VeracryptVolume *volume, const bool text = false) {
         QStringList options;
+
+        if (text) {
+            options.append(QStringLiteral("--text"));
+        }
 
         // Validate Key Files
         for (const auto &keyFile:volume->keyFiles) {
             if (!QFile::exists(keyFile)) {
-                showErrorMessage(QStringLiteral("The key file ( ") % keyFile % QStringLiteral(" ) does not exist!"));
+                showErrorMessage(QStringLiteral("The key file ( ") % keyFile % QStringLiteral(" ) does not exist!"), text);
                 return;
             }
         }
@@ -32,19 +53,28 @@ public:
 
         // Validate source
         if (volume->source == QLatin1String("Select File") || volume->source == QLatin1String("Select Device")) {
-            showErrorMessage(QStringLiteral("Please select a valid source for the volume!"));
+            showErrorMessage(QStringLiteral("Please select a valid source for the volume!"), text);
             return;
         } else if (!QFile::exists(volume->source)) {
-            showErrorMessage(QStringLiteral("The volume source ( ") % volume->source % QStringLiteral(" ) does not exist!"));
+            showErrorMessage(QStringLiteral("The volume source ( ") % volume->source % QStringLiteral(" ) does not exist!"), text);
             return;
         }
         options.append(volume->source);
         options.append(volume->mountPath);
 
-        QProcess::startDetached(QStringLiteral("veracrypt"), options);
+        if (text) {
+            QProcess process;
+            options.prepend(QStringLiteral("veracrypt"));
+#pragma GCC diagnostic ignored "-Wunused-result"
+            system(qPrintable(options.join(' ')));
+#pragma GCC diagnostic pop
+        } else {
+            QProcess::startDetached(QStringLiteral("veracrypt"), options);
+        }
+
 
         // Optional pass integration
-        if (!volume->passPath.isEmpty()) {
+        if (!volume->passPath.isEmpty() && !text) {
             QProcess passProcess;
             passProcess.start("pass", QStringList() << "show" << volume->passPath);
             // Wait for windows to be shown
@@ -52,7 +82,7 @@ public:
             const QMap<QString, QString> ids = getCurrentWindows(volume->source);
             if (!ids.contains(QStringLiteral("veracrypt"))) {
                 passProcess.kill();
-                showErrorMessage(QStringLiteral("Could not find Veracrypt Window, proceeding without autotype"));
+                showErrorMessage(QStringLiteral("Could not find Veracrypt Window, proceeding without autotype"), text);
             }
             if (ids.contains(QStringLiteral("pass"))) {
                 // Focus window if it exists
@@ -63,7 +93,7 @@ public:
             const QString passResults = passProcess.readAllStandardOutput();
             const QString passError = passProcess.readAllStandardError();
             if (passError.contains(QLatin1String(" is not in the password store."))) {
-                showErrorMessage(passError);
+                showErrorMessage(passError, text);
             }
             if (!passResults.isEmpty()) {
                 const QString password = passResults.split('\n', QString::SkipEmptyParts).at(0);
@@ -75,14 +105,20 @@ public:
         }
     }
 
-    static void showErrorMessage(const QString &msg) {
-        KNotification::event(KNotification::Error,
-                             QStringLiteral("Veracrypt Runner"),
-                             msg,
-                             QStringLiteral("veracrypt")
-        );
-
+    static void showErrorMessage(const QString &msg, const bool text) {
+        if (!text) {
+            KNotification::event(KNotification::Error,
+                                 QStringLiteral("Veracrypt Runner"),
+                                 msg,
+                                 QStringLiteral("veracrypt")
+            );
+        } else {
+            QTextStream err(stderr);
+            err << msg;
+            err.flush();
+        }
     }
+
 
     static QString getHostName() {
         QProcess hostNameProces;
@@ -110,6 +146,7 @@ public:
         QRegExp entryRegex(regexStr);
         QMap<QString, QString> windowsIDs;
         const auto veracryptWindowContains = QString(QStringLiteral("Enter password for \"") % volumeSource % "\"");
+        const QString hostname = getHostName();
 
         // Write only the window isd for pass and veracrypt
         for (const auto &entry:entries) {
@@ -128,5 +165,4 @@ public:
     }
 };
 
-// Initialize static variable
-QString VolumeCommandBuilder::hostname = VolumeCommandBuilder::getHostName();
+#endif // VOLUME_COMMAND_BUILDER_H

@@ -5,7 +5,6 @@
 #include <QDBusArgument>
 #include <QDBusMetaType>
 #include <QDebug>
-#include <core/VolumeCommandBuilder.h>
 #include <ui/VeracryptConfigItem.h>
 #include <QtWidgets/QGridLayout>
 
@@ -63,7 +62,7 @@ RemoteMatches VeracryptRunner::Match(const QString &searchTerm) {
     if (forceFetch || lastFetched.secsTo(current) > 10) {
         forceFetch = false;
         lastFetched = current;
-        fetchMountedVolumes();
+        manager->fetchMountedVolumes(mountedVolumes);
     }
     queryRegex.indexIn(searchTerm);
     const QString volumeQuery = queryRegex.cap(1);
@@ -116,24 +115,6 @@ void VeracryptRunner::Run(const QString &id, const QString &actionId) {
     }
 }
 
-void VeracryptRunner::fetchMountedVolumes() {
-    mountedVolumes.clear();
-    QProcess fetchVolumesProcess;
-    fetchVolumesProcess.start(QStringLiteral("veracrypt"),
-                              QStringList() << QStringLiteral("-t") << QStringLiteral("-l"));
-    fetchVolumesProcess.waitForFinished(-1);
-    const QString res = fetchVolumesProcess.readAll();
-    if (!res.isEmpty()) {
-        for (const auto &mountedVolume:res.split("\n")) {
-            QRegExp pathRegex(QStringLiteral(R"(\d*: ([^ ]+))"));
-            pathRegex.indexIn(mountedVolume);
-            const auto path = pathRegex.cap(1);
-            if (!path.isEmpty()) {
-                mountedVolumes.append(path);
-            }
-        }
-    }
-}
 
 void VeracryptRunner::configChanged(const QString &fileName) {
     loadVolumesFromConfig();

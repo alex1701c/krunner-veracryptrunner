@@ -1,10 +1,14 @@
-#include <QCoreApplication>
-#include <runner/VeracryptRunner.h>
 #include <QtWidgets/QApplication>
+#include <runner/VeracryptRunner.h>
+#include "cli/CLIMain.h"
 
 int main(int argc, char **argv) {
-    QApplication app(argc, argv);
-    QApplication::setQuitOnLastWindowClosed(false);
-    VeracryptRunner r;
-    QApplication::exec();
+    if (argc == 1) {
+        QApplication app(argc, argv);
+        QApplication::setQuitOnLastWindowClosed(false);
+        VeracryptRunner r;
+        QApplication::exec();
+    } else {
+        cli(argc, argv);
+    }
 }

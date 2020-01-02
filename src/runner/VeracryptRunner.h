@@ -2,9 +2,10 @@
 #pragma once
 
 #include <QObject>
+#include <QtCore/QFileSystemWatcher>
+#include <core/VolumeCommandBuilder.h>
 #include <core/VeracryptVolume.h>
 #include <core/VeracryptVolumeManager.h>
-#include <QtCore/QFileSystemWatcher>
 #include "dbus_utils.h"
 
 class VeracryptRunner : public QObject {
@@ -39,8 +40,6 @@ private:
     QTime lastFetched;
     bool forceFetch = true;
     RemoteActions actions;
-
-    void fetchMountedVolumes();
 
     void loadVolumesFromConfig();
 };
