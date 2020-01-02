@@ -1,7 +1,7 @@
 set(CMAKE_BINARY_DIR "../bin")
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
-set(veracryptrunner_SRCS main.cpp runner/VeracryptRunner.cpp ui/VeracryptConfigItem.cpp ui/editdialog.cpp)
+set(veracryptrunner_SRCS main.cpp runner/VeracryptRunner.cpp ui/VeracryptConfigItem.cpp ui/editdialog.cpp cli/CLIMain.cpp)
 
 ki18n_wrap_ui(veracryptrunner_SRCS ui/editdialog.ui)
 ki18n_wrap_ui(veracryptrunner_SRCS ui/veracryptrunner_config_item.ui)

@@ -114,7 +114,7 @@ public:
             );
         } else {
             QTextStream err(stderr);
-            err << msg;
+            err << msg << '\n';
             err.flush();
         }
     }

@@ -9,6 +9,6 @@ int main(int argc, char **argv) {
         VeracryptRunner r;
         QApplication::exec();
     } else {
-        cli(argc, argv);
+        CLIMain(argc, argv);
     }
 }
