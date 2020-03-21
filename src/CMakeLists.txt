@@ -3,7 +3,6 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 set(veracryptrunner_SRCS main.cpp runner/VeracryptRunner.cpp ui/VeracryptConfigItem.cpp ui/editdialog.cpp cli/CLIMain.cpp)
 
-ki18n_wrap_ui(veracryptrunner_SRCS ui/editdialog.ui)
 ki18n_wrap_ui(veracryptrunner_SRCS ui/veracryptrunner_config_item.ui)
 qt5_add_dbus_adaptor(veracryptrunner_SRCS "/usr/share/dbus-1/interfaces/kf5_org.kde.krunner1.xml" runner/VeracryptRunner.h VeracryptRunner)
 
