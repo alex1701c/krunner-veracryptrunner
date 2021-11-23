@@ -17,6 +17,7 @@ find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS Runner Notifications I18
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
+include(ECMGenerateDBusServiceFile)
 include(FeatureSummary)
 
 add_subdirectory(src)

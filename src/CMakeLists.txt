@@ -14,9 +14,10 @@ target_link_libraries(veracryptrunner
         KF5::I18n
         )
 
-install(FILES runner/veracryptrunner2.desktop DESTINATION ~/.local/share/kservices5/)
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    install(TARGETS veracryptrunner DESTINATION ~/.config/autostart-scripts/)
-endif()
+install(FILES runner/veracryptrunner2.desktop DESTINATION "${KDE_INSTALL_DATAROOTDIR}/krunner/dbusplugins")
+install(TARGETS veracryptrunner DESTINATION ${KDE_INSTALL_LIBEXECDIR})
+ecm_generate_dbus_service_file(NAME net.veracryptrunner2
+                               EXECUTABLE ${KDE_INSTALL_FULL_LIBEXECDIR}/veracryptrunner
+                               DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR})
 
 add_subdirectory(config)
