@@ -26,9 +26,7 @@ public:
         if (text) {
             QProcess process;
             options.prepend(QStringLiteral("veracrypt"));
-#pragma GCC diagnostic ignored "-Wunused-result"
-            system(qPrintable(options.join(' ')));
-#pragma GCC diagnostic pop
+            Q_UNUSED(system(qPrintable(options.join(' '))));
         } else {
             QProcess::startDetached(QStringLiteral("veracrypt"), options);
         }
@@ -65,9 +63,7 @@ public:
         if (text) {
             QProcess process;
             options.prepend(QStringLiteral("veracrypt"));
-#pragma GCC diagnostic ignored "-Wunused-result"
-            system(qPrintable(options.join(' ')));
-#pragma GCC diagnostic pop
+            Q_UNUSED(system(qPrintable(options.join(' '))));
         } else {
             QProcess::startDetached(QStringLiteral("veracrypt"), options);
         }
@@ -96,7 +92,7 @@ public:
                 showErrorMessage(passError, text);
             }
             if (!passResults.isEmpty()) {
-                const QString password = passResults.split('\n', QString::SkipEmptyParts).at(0);
+                const QString password = passResults.split('\n', Qt::SkipEmptyParts).at(0);
                 if (!password.isEmpty()) {
                     QProcess::startDetached("xdotool",
                                             QStringList() << "type" << "--window" << ids.value("veracrypt") << password);
@@ -122,7 +118,7 @@ public:
 
     static QString getHostName() {
         QProcess hostNameProces;
-        hostNameProces.start("hostname");
+        hostNameProces.start("hostname", QStringList());
         hostNameProces.waitForFinished(-1);
         return QString(hostNameProces.readAllStandardOutput()).remove('\n');
     }
@@ -139,7 +135,7 @@ public:
         windowListProcess.start("wmctrl", QStringList({"-l"}));
         windowListProcess.waitForFinished(-1);
         const QString out = windowListProcess.readAllStandardOutput();
-        const QStringList entries = out.split('\n', QString::SkipEmptyParts);
+        const QStringList entries = out.split('\n', Qt::SkipEmptyParts);
 
         // Window Id, desktop number, hostname, window name
         const auto regexStr = QString(R"(^([\w]+)  \d+ (.*))");

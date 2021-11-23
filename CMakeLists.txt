@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.16)
 set(QT_MIN_VERSION 5.14.0)
 set(KF5_MIN_VERSION 5.64.0)
 
+add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
+add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055700)
+
 project(veracryptrunner)
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "" FORCE)

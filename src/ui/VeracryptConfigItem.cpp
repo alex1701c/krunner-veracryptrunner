@@ -94,7 +94,7 @@ void VeracryptConfigItem::openVolumeDevicePicker() {
     process.start(QStringLiteral("lsblk"), QStringList() << QStringLiteral("-o") << QStringLiteral("NAME,LABEL,SIZE,MOUNTPOINT"));
     process.waitForFinished(-1);
     const QStringList devices = QString(process.readAllStandardOutput())
-            .split(QStringLiteral("\n"), QString::SkipEmptyParts)
+            .split(QStringLiteral("\n"), Qt::SkipEmptyParts)
             .filter(QRegExp(QStringLiteral(R"(.*sd.*)")));
     const QString deviceInfo = QInputDialog::getItem(this, QStringLiteral("Select Device"),
                                                      QStringLiteral("Name Label Size Mount Point"), devices);

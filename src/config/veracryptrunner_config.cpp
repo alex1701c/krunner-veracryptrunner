@@ -5,7 +5,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 
-K_PLUGIN_FACTORY(VeracryptRunnerConfigFactory, registerPlugin<VeracryptRunnerConfig>("kcm_krunner_veracryptrunner2");)
+K_PLUGIN_FACTORY(VeracryptRunnerConfigFactory, registerPlugin<VeracryptRunnerConfig>();)
 
 VeracryptRunnerConfigForm::VeracryptRunnerConfigForm(QWidget *parent) : QWidget(parent) {
     setupUi(this);
@@ -16,8 +16,7 @@ VeracryptRunnerConfig::VeracryptRunnerConfig(QWidget *parent, const QVariantList
     auto *layout = new QGridLayout(this);
     layout->addWidget(m_ui, 0, 0);
 
-    connect(m_ui->pushButton, &QPushButton::clicked, this,
-            static_cast<void (VeracryptRunnerConfig::*)()>(&VeracryptRunnerConfig::changed));
+    connect(m_ui->pushButton, &QPushButton::clicked, this, &VeracryptRunnerConfig::markAsChanged);
     connect(m_ui->pushButton, &QPushButton::clicked, this,
             static_cast<void (VeracryptRunnerConfig::*)()>(&VeracryptRunnerConfig::addVeracryptItem));
 }
@@ -82,8 +81,7 @@ void VeracryptRunnerConfig::defaults() {
 void VeracryptRunnerConfig::addVeracryptItem(VeracryptVolume *volume, bool validate) {
     auto *element = new VeracryptConfigItem(this, volume);
     m_ui->veracryptVolumes->insertWidget(0, element);
-    connect(element, &VeracryptConfigItem::changed, this,
-            static_cast<void (VeracryptRunnerConfig::*)()>(&VeracryptRunnerConfig::changed));
+    connect(element, &VeracryptConfigItem::changed, this, &VeracryptRunnerConfig::markAsChanged);
     connect(element, &VeracryptConfigItem::confirmedDelete, this, &VeracryptRunnerConfig::confirmedDeleteOfItem);
     connect(element, &VeracryptConfigItem::moveItemUp, this, &VeracryptRunnerConfig::moveItemUp);
     connect(element, &VeracryptConfigItem::moveItemDown, this, &VeracryptRunnerConfig::moveItemDown);

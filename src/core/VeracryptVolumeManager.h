@@ -65,7 +65,7 @@ private:
             volume->source = volumeConfig.readEntry("source");
             volume->mountPath = volumeConfig.readEntry("mountPath");
             volume->keyFiles = volumeConfig.readEntry("keyFiles")
-                    .split(";", QString::SplitBehavior::SkipEmptyParts);
+                    .split(";", Qt::SkipEmptyParts);
             volume->passPath = volumeConfig.readEntry("passPath");
             volumes.append(volume);
         }
