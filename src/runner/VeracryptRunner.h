@@ -24,6 +24,9 @@ public Q_SLOTS:
 
     RemoteMatches Match(const QString &searchTerm);
 
+    void Teardown() {};
+    QVariantMap Config() {return {};}
+
     void Run(const QString &id, const QString &actionId);
 
     void configChanged(const QString &fileName);
