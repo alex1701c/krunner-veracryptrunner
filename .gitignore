@@ -6,3 +6,6 @@
 *.swap
 *.kdev4
 /src/config/ui*.h
+.cache
+.clangd
+compile_commands.json
