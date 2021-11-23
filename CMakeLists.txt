@@ -1,4 +1,7 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.16)
+
+set(QT_MIN_VERSION 5.14.0)
+set(KF5_MIN_VERSION 5.64.0)
 
 project(veracryptrunner)
 if (NOT CMAKE_BUILD_TYPE)
