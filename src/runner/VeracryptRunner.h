@@ -1,13 +1,13 @@
 //  Licensed under the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #pragma once
 
+#include "dbus_utils.h"
+#include <QFileSystemWatcher>
 #include <QObject>
-#include <QtCore/QFileSystemWatcher>
 #include <QRegularExpression>
-#include <core/VolumeCommandBuilder.h>
 #include <core/VeracryptVolume.h>
 #include <core/VeracryptVolumeManager.h>
-#include "dbus_utils.h"
+#include <core/VolumeCommandBuilder.h>
 
 class VeracryptRunner : public QObject {
 Q_OBJECT

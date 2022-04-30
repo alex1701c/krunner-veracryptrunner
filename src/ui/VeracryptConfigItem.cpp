@@ -1,11 +1,12 @@
 //  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
-#include <QtWidgets/QFileDialog>
 #include <QDebug>
-#include <QtWidgets/QMessageBox>
-#include <QtCore/QStorageInfo>
-#include <QtCore/QProcess>
-#include <QtWidgets/QInputDialog>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QProcess>
+#include <QStorageInfo>
 #include <QStringBuilder>
+
 #include "../core/VeracryptVolumeManager.h"
 #include "VeracryptConfigItem.h"
 

@@ -2,8 +2,8 @@
 #ifndef VERACRYPT_VOLUME_H
 #define VERACRYPT_VOLUME_H
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
+#include <QString>
+#include <QStringList>
 
 enum VolumeType {
     File,

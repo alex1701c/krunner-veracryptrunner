@@ -1,7 +1,7 @@
-#include <QtCore/QTextStream>
+#include "CLIMain.h"
+#include <QTextStream>
 #include <core/VeracryptVolumeManager.h>
 #include <core/VolumeCommandBuilder.h>
-#include "CLIMain.h"
 
 CLIMain::CLIMain(int argc, char **argv) {
     QCoreApplication app(argc, argv);

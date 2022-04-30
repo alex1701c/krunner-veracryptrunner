@@ -1,13 +1,12 @@
 //  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #pragma once
 
+#include "../core/VeracryptVolume.h"
 #include "../ui/VeracryptConfigItem.h"
 #include "ui_veracryptrunner_config.h"
 #include <KCModule>
+#include <KConfigGroup>
 #include <KSharedConfig>
-#include <KConfigCore/KConfigGroup>
-#include "../core/VeracryptVolume.h"
-#include "../core/VeracryptVolumeManager.h"
 
 class VeracryptRunnerConfigForm : public QWidget, public Ui::VeracryptRunnerConfigUi {
 Q_OBJECT

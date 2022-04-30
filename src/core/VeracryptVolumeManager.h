@@ -2,12 +2,12 @@
 #ifndef VERACRYPT_VOLUME_MANAGER_H
 #define VERACRYPT_VOLUME_MANAGER_H
 
-#include <QDebug>
-#include <QRegularExpression>
-#include <KSharedConfig>
-#include <KConfigCore/KConfigGroup>
-#include <QtCore/QProcess>
 #include "VeracryptVolume.h"
+#include <KConfigGroup>
+#include <KSharedConfig>
+#include <QDebug>
+#include <QProcess>
+#include <QRegularExpression>
 
 class VeracryptVolumeManager {
 public:

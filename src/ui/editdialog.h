@@ -1,14 +1,14 @@
 //  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #pragma once
 
-#include <QDialog>
-#include <utility>
-#include <QtWidgets/QToolButton>
-#include <QtWidgets/QLineEdit>
-#include <QtWidgets/QLabel>
 #include <KNotifications/KNotification>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QToolButton>
 #include <core/VeracryptVolume.h>
 #include <ui/VeracryptConfigItem.h>
+#include <utility>
 
 class EditDialog : public QDialog {
 Q_OBJECT

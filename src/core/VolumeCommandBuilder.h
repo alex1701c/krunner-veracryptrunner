@@ -3,15 +3,15 @@
 #ifndef VOLUME_COMMAND_BUILDER_H
 #define VOLUME_COMMAND_BUILDER_H
 
-#include <QtCore/QProcess>
 #include "VeracryptVolume.h"
-#include <QtCore/QThread>
-#include <QtWidgets/QMessageBox>
-#include <QtCore/QFile>
 #include <KNotifications/KNotification>
-#include <QStringBuilder>
-#include <QRegularExpression>
 #include <QDebug>
+#include <QMessageBox>
+#include <QProcess>
+#include <QRegularExpression>
+#include <QStringBuilder>
+#include <QThread>
+#include <QtCore/QFile>
 
 class VolumeCommandBuilder {
 public:

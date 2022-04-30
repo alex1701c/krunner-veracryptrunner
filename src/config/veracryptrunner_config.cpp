@@ -2,8 +2,8 @@
 #include "veracryptrunner_config.h"
 #include "../ui/VeracryptConfigItem.h"
 #include <KPluginFactory>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QRadioButton>
+#include <QPushButton>
+#include <QRadioButton>
 
 K_PLUGIN_FACTORY(VeracryptRunnerConfigFactory, registerPlugin<VeracryptRunnerConfig>();)
 
