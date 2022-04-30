@@ -64,8 +64,8 @@ RemoteMatches VeracryptRunner::Match(const QString &searchTerm) {
         lastFetched = current;
         manager->fetchMountedVolumes(mountedVolumes);
     }
-    queryRegex.indexIn(searchTerm);
-    const QString volumeQuery = queryRegex.cap(1);
+    const QRegularExpressionMatch match = queryRegex.match(searchTerm);
+    const QString volumeQuery = match.lastCapturedIndex() < 1 ? QString() : match.capturedTexts().at(1);
     for (const auto *volume:volumes) {
         if (volume->name.contains(volumeQuery, Qt::CaseInsensitive)) {
             RemoteMatch m;

@@ -3,6 +3,7 @@
 #define VERACRYPT_VOLUME_MANAGER_H
 
 #include <QDebug>
+#include <QRegularExpression>
 #include <KSharedConfig>
 #include <KConfigCore/KConfigGroup>
 #include <QtCore/QProcess>
@@ -42,9 +43,9 @@ public:
         const QString res = fetchVolumesProcess.readAll();
         if (!res.isEmpty()) {
             for (const auto &mountedVolume:res.split("\n")) {
-                QRegExp pathRegex(QStringLiteral(R"(\d*: ([^ ]+))"));
-                pathRegex.indexIn(mountedVolume);
-                const auto path = pathRegex.cap(1);
+                static const QRegularExpression pathRegex(QStringLiteral(R"(\d*: ([^ ]+))"));
+                const QRegularExpressionMatch match = pathRegex.match(mountedVolume);
+                const auto path = match.hasMatch() ? match.capturedTexts().constFirst() : QString();
                 if (!path.isEmpty()) {
                     mountedVolumes.append(path);
                 }
@@ -56,7 +57,7 @@ private:
     QList<VeracryptVolume *> readVolumes() {
         QList<VeracryptVolume *> volumes;
         config.config()->reparseConfiguration();
-        for (const auto &volumeName:config.groupList().filter(QRegExp(R"(^(?!General$).*$)"))) {
+        for (const auto &volumeName:config.groupList()) {
             auto *volume = new VeracryptVolume();
             KConfigGroup volumeConfig = config.group(volumeName);
             volume->name = volumeName;

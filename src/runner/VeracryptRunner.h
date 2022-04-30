@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QtCore/QFileSystemWatcher>
+#include <QRegularExpression>
 #include <core/VolumeCommandBuilder.h>
 #include <core/VeracryptVolume.h>
 #include <core/VeracryptVolumeManager.h>
@@ -32,7 +33,7 @@ public Q_SLOTS:
     void configChanged(const QString &fileName);
 
 private:
-    QRegExp queryRegex = QRegExp(QStringLiteral(R"(^(?:veracrypt?|vc)(?: (.*))?$)"));
+    const QRegularExpression queryRegex = QRegularExpression(QStringLiteral(R"(^(?:veracrypt?|vc)(?: (.*))?$)"));
     VeracryptVolumeManager *manager;
     bool initialized = false;
     const QString iconName = QStringLiteral("veracrypt");

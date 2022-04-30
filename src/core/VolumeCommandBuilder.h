@@ -138,17 +138,19 @@ public:
         const QStringList entries = out.split('\n', Qt::SkipEmptyParts);
 
         // Window Id, desktop number, hostname, window name
-        const auto regexStr = QString(R"(^([\w]+)  \d+ (.*))");
-        QRegExp entryRegex(regexStr);
+        static const QRegularExpression entryRegex((R"(^([\w]+)  \d+ (.*))"));
         QMap<QString, QString> windowsIDs;
         const auto veracryptWindowContains = QString(QStringLiteral("Enter password for \"") % volumeSource % "\"");
         const QString hostname = getHostName();
 
         // Write only the window isd for pass and veracrypt
         for (const auto &entry:entries) {
-            entryRegex.indexIn(entry);
-            const QString id = entryRegex.cap(1);
-            const QString title = entryRegex.cap(2);
+            QRegularExpressionMatch match = entryRegex.match(entry);
+            if (!match.hasMatch()) {
+                continue;
+            }
+            const QString id = match.capturedTexts().at(1);
+            const QString title = match.capturedTexts().at(2);
             if (!id.isEmpty()) {
                 if (title.contains(veracryptWindowContains)) {
                     windowsIDs.insert("veracrypt", id);

@@ -43,7 +43,7 @@ void VeracryptRunnerConfig::save() {
         configItemsUi.append(reinterpret_cast<VeracryptConfigItem *>( m_ui->veracryptVolumes->itemAt(i)->widget()));
     }
     auto config = KSharedConfig::openConfig(QStringLiteral("veracryptrunnerrc"))->group("Configs");
-    for (const auto &volumeGroupName:config.groupList().filter(QRegExp(R"(^(?!General$).*$)"))) {
+    for (const auto &volumeGroupName:config.groupList()) {
         config.group(volumeGroupName).deleteGroup();
     }
     QStringList savedNames;
