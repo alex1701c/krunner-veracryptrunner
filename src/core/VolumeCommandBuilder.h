@@ -72,7 +72,7 @@ public:
         // Optional pass integration
         if (!volume->passPath.isEmpty() && !text) {
             QProcess passProcess;
-            passProcess.start("pass", QStringList() << "show" << volume->passPath);
+            passProcess.start("pass", QStringList{"show", volume->passPath});
             // Wait for windows to be shown
             QThread::msleep(750);
             const QMap<QString, QString> ids = getCurrentWindows(volume->source);
@@ -82,7 +82,7 @@ public:
             }
             if (ids.contains(QStringLiteral("pass"))) {
                 // Focus window if it exists
-                QProcess::startDetached("wmctrl", QStringList({"-i", "-a", ids.value("pass")}));
+                QProcess::startDetached("wmctrl", QStringList{"-i", "-a", ids.value("pass")});
             }
 
             passProcess.waitForFinished(-1);
@@ -94,8 +94,7 @@ public:
             if (!passResults.isEmpty()) {
                 const QString password = passResults.split('\n', Qt::SkipEmptyParts).at(0);
                 if (!password.isEmpty()) {
-                    QProcess::startDetached("xdotool",
-                                            QStringList() << "type" << "--window" << ids.value("veracrypt") << password);
+                    QProcess::startDetached("xdotool", QStringList{"type", "--window", ids.value("veracrypt"), password});
                 }
             }
         }
@@ -118,7 +117,7 @@ public:
 
     static QString getHostName() {
         QProcess hostNameProces;
-        hostNameProces.start("hostname", QStringList());
+        hostNameProces.start("hostname", QStringList{});
         hostNameProces.waitForFinished(-1);
         return QString(hostNameProces.readAllStandardOutput()).remove('\n');
     }
@@ -132,7 +131,7 @@ public:
      */
     static QMap<QString, QString> getCurrentWindows(const QString &volumeSource) {
         QProcess windowListProcess;
-        windowListProcess.start("wmctrl", QStringList({"-l"}));
+        windowListProcess.start("wmctrl", QStringList{"-l"});
         windowListProcess.waitForFinished(-1);
         const QString out = windowListProcess.readAllStandardOutput();
         const QStringList entries = out.split('\n', Qt::SkipEmptyParts);

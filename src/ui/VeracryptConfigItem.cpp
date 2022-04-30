@@ -91,7 +91,7 @@ void VeracryptConfigItem::openVolumeFilePicker() {
 
 void VeracryptConfigItem::openVolumeDevicePicker() {
     QProcess process;
-    process.start(QStringLiteral("lsblk"), QStringList() << QStringLiteral("-o") << QStringLiteral("NAME,LABEL,SIZE,MOUNTPOINT"));
+    process.start(QStringLiteral("lsblk"), QStringList{QStringLiteral("-o"), QStringLiteral("NAME,LABEL,SIZE,MOUNTPOINT")});
     process.waitForFinished(-1);
     const QStringList devices = QString(process.readAllStandardOutput())
             .split(QStringLiteral("\n"), Qt::SkipEmptyParts)

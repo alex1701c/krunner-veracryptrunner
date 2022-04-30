@@ -37,8 +37,7 @@ public:
     static void fetchMountedVolumes(QStringList &mountedVolumes) {
         mountedVolumes.clear();
         QProcess fetchVolumesProcess;
-        fetchVolumesProcess.start(QStringLiteral("veracrypt"),
-                                  QStringList() << QStringLiteral("-t") << QStringLiteral("-l"));
+        fetchVolumesProcess.start(QStringLiteral("veracrypt"), QStringList{QStringLiteral("-t"), QStringLiteral("-l")});
         fetchVolumesProcess.waitForFinished(-1);
         const QString res = fetchVolumesProcess.readAll();
         if (!res.isEmpty()) {
