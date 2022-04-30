@@ -9,7 +9,7 @@ qt5_add_dbus_adaptor(veracryptrunner_SRCS "/usr/share/dbus-1/interfaces/kf5_org.
 add_executable(veracryptrunner ${veracryptrunner_SRCS})
 target_link_libraries(veracryptrunner
         Qt5::DBus
-        KF5::Runner
+        KF5::ConfigCore
         KF5::Notifications
         KF5::I18n
         )

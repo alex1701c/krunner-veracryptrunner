@@ -4,16 +4,33 @@
 #include <QList>
 #include <QString>
 #include <QMap>
-#include <KRunner/QueryMatch>
 #include <QDBusArgument>
 #include <QVariantMap>
 
+enum Type {
+    NoMatch = 0, /**< Null match */
+    CompletionMatch = 10, /**< Possible completion for the data of the query */
+    PossibleMatch = 30, /**< Something that may match the query */
+    InformationalMatch = 50, /**< A purely informational, non-runnable match,
+                               such as the answer to a question or calculation.
+                               The data of the match will be converted to a string
+                               and set in the search field */
+    HelperMatch = 70, /**< A match that represents an action not directly related
+                         to activating the given search term, such as a search
+                         in an external tool or a command learning trigger. Helper
+                         matches tend to be generic to the query and should not
+                         be autoactivated just because the user hits "Enter"
+                         while typing. They must be explicitly selected to
+                         be activated, but unlike InformationalMatch cause
+                         an action to be triggered. */
+    ExactMatch = 100, /**< An exact match to the query */
+};
 struct RemoteMatch {
     // sssuda{sv}
     QString id;
     QString text;
     QString iconName;
-    Plasma::QueryMatch::Type type = Plasma::QueryMatch::NoMatch;
+    Type type = NoMatch;
     qreal relevance = 0;
     QVariantMap properties;
 };
@@ -48,7 +65,7 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, RemoteMatc
     argument >> match.iconName;
     uint type;
     argument >> type;
-    match.type = static_cast<Plasma::QueryMatch::Type>(type);
+    match.type = static_cast<Type>(type);
     argument >> match.relevance;
     argument >> match.properties;
     argument.endStructure();

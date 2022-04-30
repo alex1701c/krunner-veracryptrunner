@@ -79,7 +79,7 @@ RemoteMatches VeracryptRunner::Match(const QString &searchTerm) {
                 m.relevance = 0;
             }
             m.iconName = iconName;
-            m.type = Plasma::QueryMatch::ExactMatch;
+            m.type = Type::ExactMatch;
             ms.append(m);
         }
     }
