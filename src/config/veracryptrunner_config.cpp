@@ -75,7 +75,7 @@ void VeracryptRunnerConfig::save() {
 }
 
 void VeracryptRunnerConfig::defaults() {
-    emit changed(true);
+    markAsChanged();
 }
 
 void VeracryptRunnerConfig::addVeracryptItem(VeracryptVolume *volume, bool validate) {
@@ -87,7 +87,7 @@ void VeracryptRunnerConfig::addVeracryptItem(VeracryptVolume *volume, bool valid
     connect(element, &VeracryptConfigItem::moveItemDown, this, &VeracryptRunnerConfig::moveItemDown);
     connect(element, &VeracryptConfigItem::nameChanged, this, &VeracryptRunnerConfig::validateDuplicateNames);
     if (validate) {
-        emit element->nameChanged();
+        Q_EMIT element->nameChanged();
         validateMoveButtons();
     }
 }

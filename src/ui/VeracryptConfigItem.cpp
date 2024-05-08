@@ -143,7 +143,7 @@ void VeracryptConfigItem::deleteConfig() {
                                            QMessageBox::Yes | QMessageBox::No);
     if (res == QMessageBox::Yes) {
         // Deletes Widget and remove it from list in parent
-        emit confirmedDelete();
+        Q_EMIT confirmedDelete();
     }
 }
 

@@ -13,6 +13,7 @@ include(ECMGenerateDBusServiceFile)
 include(ECMDeprecationSettings)
 include(FeatureSummary)
 
+remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 ecm_set_disabled_deprecation_versions(
     QT ${QT_MIN_VERSION}
     KF ${KF_MIN_VERSION}

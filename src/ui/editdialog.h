@@ -29,7 +29,7 @@ public:
     VeracryptVolume *volume;
     QStringList volumeNames;
 
-private slots:
+private Q_SLOTS:
 
     void save();
 
