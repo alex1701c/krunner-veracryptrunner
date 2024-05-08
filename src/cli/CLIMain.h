@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../core/VeracryptVolumeManager.h"
-#include <QtCore/QCommandLineParser>
+#include <QCommandLineParser>
 
 class CLIMain {
 public:

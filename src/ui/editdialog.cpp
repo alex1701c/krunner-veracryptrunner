@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QPushButton>
 #include <QStringBuilder>
+#include <KSharedConfig>
 #include <ui/VeracryptConfigItem.h>
 
 EditDialog::EditDialog(VeracryptVolume *volume, QStringList volumeNames) : QDialog(nullptr) {

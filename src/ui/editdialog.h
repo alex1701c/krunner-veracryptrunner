@@ -8,7 +8,6 @@
 #include <QToolButton>
 #include <core/VeracryptVolume.h>
 #include <ui/VeracryptConfigItem.h>
-#include <utility>
 
 class EditDialog : public QDialog {
 Q_OBJECT

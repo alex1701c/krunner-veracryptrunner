@@ -7,7 +7,6 @@
 #include <QStorageInfo>
 #include <QStringBuilder>
 
-#include "../core/VeracryptVolumeManager.h"
 #include "VeracryptConfigItem.h"
 
 VeracryptConfigItem::VeracryptConfigItem(QWidget *parent, VeracryptVolume *volume) : QWidget(parent) {

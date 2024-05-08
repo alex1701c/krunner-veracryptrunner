@@ -2,8 +2,8 @@
 #pragma once
 
 #include "ui_veracryptrunner_config_item.h"
-#include <KConfigCore/KConfigGroup>
-#include "../core/VeracryptVolumeManager.h"
+#include <KConfigGroup>
+#include "../core/VeracryptVolume.h"
 
 
 class VeracryptConfigItem : public QWidget, public Ui::VeracryptItemUi {

@@ -4,7 +4,7 @@
 #define VOLUME_COMMAND_BUILDER_H
 
 #include "VeracryptVolume.h"
-#include <KNotifications/KNotification>
+#include <KNotification>
 #include <QDebug>
 #include <QMessageBox>
 #include <QProcess>
