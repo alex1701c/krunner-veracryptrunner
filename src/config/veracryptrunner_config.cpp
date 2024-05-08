@@ -21,7 +21,7 @@ VeracryptRunnerConfig::VeracryptRunnerConfig(QObject *parent, const QVariantList
     layout->addWidget(m_ui, 0, 0);
 
     connect(m_ui->pushButton, &QPushButton::clicked, this, &VeracryptRunnerConfig::markAsChanged);
-    connect(m_ui->pushButton, &QPushButton::clicked, this, static_cast<void (VeracryptRunnerConfig::*)()>(&VeracryptRunnerConfig::addVeracryptItem));
+    connect(m_ui->pushButton, &QPushButton::clicked, this, &VeracryptRunnerConfig::addNewVeracryptItem);
 }
 
 VeracryptRunnerConfig::~VeracryptRunnerConfig()
@@ -98,11 +98,6 @@ void VeracryptRunnerConfig::addVeracryptItem(VeracryptVolume *volume, bool valid
         Q_EMIT element->nameChanged();
         validateMoveButtons();
     }
-}
-
-void VeracryptRunnerConfig::addVeracryptItem()
-{
-    addVeracryptItem(new VeracryptVolume(), true);
 }
 
 void VeracryptRunnerConfig::confirmedDeleteOfItem()

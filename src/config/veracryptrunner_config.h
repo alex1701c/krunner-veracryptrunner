@@ -41,10 +41,10 @@ public Q_SLOTS:
      */
     void addVeracryptItem(VeracryptVolume *volume, bool validate);
 
-    /**
-     * Overload
-     */
-    void addVeracryptItem();
+    void addNewVeracryptItem()
+    {
+        addVeracryptItem(new VeracryptVolume(), true);
+    }
 
     void confirmedDeleteOfItem();
 
