@@ -17,35 +17,20 @@ public:
     void initializeValues();
 
 public Q_SLOTS:
-
     void toggleVolumeSource();
-
     void openVolumeFilePicker();
-
     void openVolumeDevicePicker();
-
     void openMountPathPicker();
-
     void validateKeyFileControls();
-
     void openKeyFilePicker();
-
     void removeKeyFile();
-
     void deleteConfig();
-
     void passFilePicker();
 
-public:
 Q_SIGNALS:
-
     void changed();
-
     void moveItemUp();
-
     void moveItemDown();
-
     void confirmedDelete();
-
     void nameChanged();
 };
