@@ -1,15 +1,17 @@
 //  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #include "editdialog.h"
 
+#include <KSharedConfig>
 #include <QClipboard>
-#include <QDialogButtonBox>
 #include <QDebug>
+#include <QDialogButtonBox>
 #include <QPushButton>
 #include <QStringBuilder>
-#include <KSharedConfig>
 #include <ui/VeracryptConfigItem.h>
 
-EditDialog::EditDialog(VeracryptVolume *volume, QStringList volumeNames) : QDialog(nullptr) {
+EditDialog::EditDialog(VeracryptVolume *volume, QStringList volumeNames)
+    : QDialog(nullptr)
+{
     setWindowTitle(QStringLiteral("Veracrypt Runner Edit Config"));
     setWindowIcon(QIcon::fromTheme(QStringLiteral("veracrypt")));
     auto *layout = new QGridLayout(this);
@@ -32,7 +34,8 @@ EditDialog::EditDialog(VeracryptVolume *volume, QStringList volumeNames) : QDial
     this->volumeNames = volumeNames;
 }
 
-void EditDialog::save() {
+void EditDialog::save()
+{
     if (!edited) {
         this->close();
         return;
@@ -54,12 +57,12 @@ void EditDialog::save() {
     auto group = config.group(name);
     group.writeEntry("priority", volume->priority);
     group.writeEntry("type", item->fileRadioButton->isChecked() ? "FILE" : "DEVICE");
-    group.writeEntry("source", item->fileRadioButton->isChecked() ? item->filePushButton->text().remove('&') :
-                               item->devicePushButton->text().remove('&'));
+    group.writeEntry("source", item->fileRadioButton->isChecked() ? item->filePushButton->text().remove('&') : item->devicePushButton->text().remove('&'));
     group.writeEntry("mountPath", item->mountPath->text().remove('&'));
     QString keyFilesString;
     int count = item->keyFileListWidget->model()->rowCount();
-    for (int i = 0; i < count; ++i) keyFilesString.append(item->keyFileListWidget->item(i)->text() + ";");
+    for (int i = 0; i < count; ++i)
+        keyFilesString.append(item->keyFileListWidget->item(i)->text() + ";");
     group.writeEntry("keyFiles", keyFilesString);
     group.writeEntry("passPath", item->passIntegration->text());
     config.sync();

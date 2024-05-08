@@ -3,7 +3,8 @@
 #include "../core/VeracryptVolumeManager.h"
 #include <QCommandLineParser>
 
-class CLIMain {
+class CLIMain
+{
 public:
     explicit CLIMain(int argc, char **argv);
 
@@ -36,4 +37,3 @@ private:
      */
     QString getVolumeByChoice(const QString &query);
 };
-

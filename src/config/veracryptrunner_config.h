@@ -7,15 +7,17 @@
 #include <KConfigGroup>
 #include <KSharedConfig>
 
-class VeracryptRunnerConfigForm : public QWidget, public Ui::VeracryptRunnerConfigUi {
-Q_OBJECT
+class VeracryptRunnerConfigForm : public QWidget, public Ui::VeracryptRunnerConfigUi
+{
+    Q_OBJECT
 
 public:
     explicit VeracryptRunnerConfigForm(QWidget *parent);
 };
 
-class VeracryptRunnerConfig : public KCModule {
-Q_OBJECT
+class VeracryptRunnerConfig : public KCModule
+{
+    Q_OBJECT
 
 public:
     explicit VeracryptRunnerConfig(QObject *parent, const QVariantList &args);
@@ -58,4 +60,3 @@ private:
     QList<VeracryptVolume *> volumes;
     VeracryptRunnerConfigForm *m_ui;
 };
-

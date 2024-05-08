@@ -1,10 +1,10 @@
 //  Licensed under the GNU LESSER GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #pragma once
 
-#include <QList>
-#include <QString>
-#include <QMap>
 #include <QDBusArgument>
+#include <QList>
+#include <QMap>
+#include <QString>
 #include <QVariantMap>
 
 enum Type {
@@ -46,7 +46,8 @@ struct RemoteAction {
 
 typedef QList<RemoteAction> RemoteActions;
 
-inline QDBusArgument &operator<<(QDBusArgument &argument, const RemoteMatch &match) {
+inline QDBusArgument &operator<<(QDBusArgument &argument, const RemoteMatch &match)
+{
     argument.beginStructure();
     argument << match.id;
     argument << match.text;
@@ -58,7 +59,8 @@ inline QDBusArgument &operator<<(QDBusArgument &argument, const RemoteMatch &mat
     return argument;
 }
 
-inline const QDBusArgument &operator>>(const QDBusArgument &argument, RemoteMatch &match) {
+inline const QDBusArgument &operator>>(const QDBusArgument &argument, RemoteMatch &match)
+{
     argument.beginStructure();
     argument >> match.id;
     argument >> match.text;
@@ -73,7 +75,8 @@ inline const QDBusArgument &operator>>(const QDBusArgument &argument, RemoteMatc
     return argument;
 }
 
-inline QDBusArgument &operator<<(QDBusArgument &argument, const RemoteAction &action) {
+inline QDBusArgument &operator<<(QDBusArgument &argument, const RemoteAction &action)
+{
     argument.beginStructure();
     argument << action.id;
     argument << action.text;
@@ -82,7 +85,8 @@ inline QDBusArgument &operator<<(QDBusArgument &argument, const RemoteAction &ac
     return argument;
 }
 
-inline const QDBusArgument &operator>>(const QDBusArgument &argument, RemoteAction &action) {
+inline const QDBusArgument &operator>>(const QDBusArgument &argument, RemoteAction &action)
+{
     argument.beginStructure();
     argument >> action.id;
     argument >> action.text;

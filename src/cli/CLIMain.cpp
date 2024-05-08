@@ -3,7 +3,8 @@
 #include <core/VeracryptVolumeManager.h>
 #include <core/VolumeCommandBuilder.h>
 
-CLIMain::CLIMain(int argc, char **argv) {
+CLIMain::CLIMain(int argc, char **argv)
+{
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName("veracryptrunner");
     QCoreApplication::setApplicationVersion("1.0");
@@ -39,17 +40,19 @@ CLIMain::CLIMain(int argc, char **argv) {
     }
 }
 
-void CLIMain::showVolumeList() {
+void CLIMain::showVolumeList()
+{
     QTextStream ts(stdout);
 
     ts << "List of volumes:\n";
-    for (const auto &volume:volumes) {
+    for (const auto &volume : volumes) {
         const auto mountNote = mountedVolumes.contains(volume->source) ? " [Mounted]" : " [Unmounted]";
         ts << volume->source << mountNote << '\n';
     }
 }
 
-void CLIMain::showVolumeInfo(const QString &query) {
+void CLIMain::showVolumeInfo(const QString &query)
+{
     const QString volumeName = getVolumeByChoice(query);
     VeracryptVolume *volume = volumes.value(volumeName);
     QTextStream ts(stdout);
@@ -63,20 +66,18 @@ void CLIMain::showVolumeInfo(const QString &query) {
     }
     if (!volume->keyFiles.isEmpty()) {
         ts << "Key Files: " << '\n';
-        for (const auto &keyFile:volume->keyFiles) {
+        for (const auto &keyFile : volume->keyFiles) {
             ts << "    " << keyFile << '\n';
         }
-
     }
-
 }
 
-void CLIMain::executeMountCommand(const QString &query) {
+void CLIMain::executeMountCommand(const QString &query)
+{
     const QString volumeName = getVolumeByChoice(query);
     QTextStream ts(stdout);
     QTextStream err(stderr);
     QTextStream in(stdin);
-
 
     // Confirm/ mount the volume
     if (!volumeName.isEmpty()) {
@@ -98,14 +99,15 @@ void CLIMain::executeMountCommand(const QString &query) {
     }
 }
 
-QString CLIMain::getVolumeByChoice(const QString &query) {
+QString CLIMain::getVolumeByChoice(const QString &query)
+{
     QString volumeName;
     QTextStream ts(stderr);
     QTextStream err(stderr);
     QTextStream in(stdin);
     QStringList choices;
 
-    for (const auto *volume:volumes) {
+    for (const auto *volume : volumes) {
         if (volume->name.contains(query, Qt::CaseInsensitive)) {
             choices.append(volume->name);
         }

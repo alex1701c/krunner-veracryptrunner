@@ -9,12 +9,11 @@
 #include <core/VeracryptVolume.h>
 #include <ui/VeracryptConfigItem.h>
 
-class EditDialog : public QDialog {
-Q_OBJECT
-
+class EditDialog : public QDialog
+{
+    Q_OBJECT
 
 public:
-
     /**
      * @param volume Volume which should be edited
      * @param volumeNames Names of currently loaded volumes
@@ -32,6 +31,8 @@ private Q_SLOTS:
 
     void save();
 
-    void changed() { edited = true; };
-
+    void changed()
+    {
+        edited = true;
+    };
 };

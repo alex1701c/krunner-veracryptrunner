@@ -13,9 +13,11 @@
 #include <QThread>
 #include <QtCore/QFile>
 
-class VolumeCommandBuilder {
+class VolumeCommandBuilder
+{
 public:
-    static void buildUnmountCommand(const VeracryptVolume *volume, const bool text = false) {
+    static void buildUnmountCommand(const VeracryptVolume *volume, const bool text = false)
+    {
         QStringList options;
         if (text) {
             options.append(QStringLiteral("--text"));
@@ -32,7 +34,8 @@ public:
         }
     }
 
-    static void buildMountCommand(const VeracryptVolume *volume, const bool text = false) {
+    static void buildMountCommand(const VeracryptVolume *volume, const bool text = false)
+    {
         QStringList options;
 
         if (text) {
@@ -40,7 +43,7 @@ public:
         }
 
         // Validate Key Files
-        for (const auto &keyFile:volume->keyFiles) {
+        for (const auto &keyFile : volume->keyFiles) {
             if (!QFile::exists(keyFile)) {
                 showErrorMessage(QStringLiteral("The key file ( ") % keyFile % QStringLiteral(" ) does not exist!"), text);
                 return;
@@ -67,7 +70,6 @@ public:
         } else {
             QProcess::startDetached(QStringLiteral("veracrypt"), options);
         }
-
 
         // Optional pass integration
         if (!volume->passPath.isEmpty() && !text) {
@@ -100,13 +102,10 @@ public:
         }
     }
 
-    static void showErrorMessage(const QString &msg, const bool text) {
+    static void showErrorMessage(const QString &msg, const bool text)
+    {
         if (!text) {
-            KNotification::event(KNotification::Error,
-                                 QStringLiteral("Veracrypt Runner"),
-                                 msg,
-                                 QStringLiteral("veracrypt")
-            );
+            KNotification::event(KNotification::Error, QStringLiteral("Veracrypt Runner"), msg, QStringLiteral("veracrypt"));
         } else {
             QTextStream err(stderr);
             err << msg << '\n';
@@ -114,8 +113,8 @@ public:
         }
     }
 
-
-    static QString getHostName() {
+    static QString getHostName()
+    {
         QProcess hostNameProces;
         hostNameProces.start("hostname", QStringList{});
         hostNameProces.waitForFinished(-1);
@@ -129,7 +128,8 @@ public:
      * @param volumeSource
      * @return
      */
-    static QMap<QString, QString> getCurrentWindows(const QString &volumeSource) {
+    static QMap<QString, QString> getCurrentWindows(const QString &volumeSource)
+    {
         QProcess windowListProcess;
         windowListProcess.start("wmctrl", QStringList{"-l"});
         windowListProcess.waitForFinished(-1);
@@ -143,7 +143,7 @@ public:
         const QString hostname = getHostName();
 
         // Write only the window isd for pass and veracrypt
-        for (const auto &entry:entries) {
+        for (const auto &entry : entries) {
             QRegularExpressionMatch match = entryRegex.match(entry);
             if (!match.hasMatch()) {
                 continue;

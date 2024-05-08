@@ -1,13 +1,13 @@
 //  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #pragma once
 
+#include "../core/VeracryptVolume.h"
 #include "ui_veracryptrunner_config_item.h"
 #include <KConfigGroup>
-#include "../core/VeracryptVolume.h"
 
-
-class VeracryptConfigItem : public QWidget, public Ui::VeracryptItemUi {
-Q_OBJECT
+class VeracryptConfigItem : public QWidget, public Ui::VeracryptItemUi
+{
+    Q_OBJECT
 
 public:
     VeracryptVolume *volume;
@@ -49,4 +49,3 @@ Q_SIGNALS:
 
     void nameChanged();
 };
-

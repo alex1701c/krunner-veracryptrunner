@@ -9,8 +9,9 @@
 #include <core/VeracryptVolumeManager.h>
 #include <core/VolumeCommandBuilder.h>
 
-class VeracryptRunner : public QObject {
-Q_OBJECT
+class VeracryptRunner : public QObject
+{
+    Q_OBJECT
 
 public:
     explicit VeracryptRunner();
@@ -25,8 +26,11 @@ public Q_SLOTS:
 
     RemoteMatches Match(const QString &searchTerm);
 
-    void Teardown() {};
-    QVariantMap Config() {return {};}
+    void Teardown(){};
+    QVariantMap Config()
+    {
+        return {};
+    }
 
     void Run(const QString &id, const QString &actionId);
 
@@ -47,4 +51,3 @@ private:
 
     void loadVolumesFromConfig();
 };
-

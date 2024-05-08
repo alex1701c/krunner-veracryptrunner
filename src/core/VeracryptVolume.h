@@ -5,13 +5,10 @@
 #include <QString>
 #include <QStringList>
 
-enum VolumeType {
-    File,
-    Device
-};
+enum VolumeType { File, Device };
 
-class VeracryptVolume {
-
+class VeracryptVolume
+{
 public:
     int priority = 0;
     QString name;
