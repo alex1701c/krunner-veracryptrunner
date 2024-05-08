@@ -26,12 +26,6 @@ VeracryptRunner::VeracryptRunner()
     qDBusRegisterMetaType<RemoteActions>();
     QDBusConnection::sessionBus().registerService(QStringLiteral("net.veracryptrunner2"));
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/veracryptrunner"), this);
-
-    RemoteAction action;
-    action.id = QStringLiteral("exit");
-    action.text = QStringLiteral("Edit Entry");
-    action.iconName = QStringLiteral("document-edit");
-    actions = RemoteActions({action});
 }
 
 VeracryptRunner::~VeracryptRunner()
@@ -93,7 +87,11 @@ RemoteMatches VeracryptRunner::Match(const QString &searchTerm)
 
 RemoteActions VeracryptRunner::Actions()
 {
-    return actions;
+    RemoteAction action;
+    action.id = QStringLiteral("exit");
+    action.text = QStringLiteral("Edit Entry");
+    action.iconName = QStringLiteral("document-edit");
+    return RemoteActions({action});
 }
 
 void VeracryptRunner::Run(const QString &id, const QString &actionId)

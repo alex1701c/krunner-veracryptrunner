@@ -47,7 +47,6 @@ private:
     QStringList mountedVolumes;
     QTime lastFetched;
     bool forceFetch = true;
-    RemoteActions actions;
 
     void loadVolumesFromConfig();
 };
