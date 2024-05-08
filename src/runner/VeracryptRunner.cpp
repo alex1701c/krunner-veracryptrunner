@@ -92,10 +92,8 @@ RemoteActions VeracryptRunner::Actions() {
 }
 
 void VeracryptRunner::Run(const QString &id, const QString &actionId) {
-    Q_UNUSED(actionId)
-
     const int idx = id.indexOf('|');
-    const auto action = QStringRef(&id, 0, idx);
+    const QString action = id.mid(0, idx);
     VeracryptVolume *volume = volumes.value(id.mid(idx + 1));
 
     if (actionId.isEmpty()) {
@@ -108,7 +106,6 @@ void VeracryptRunner::Run(const QString &id, const QString &actionId) {
         }
         forceFetch = true;
     } else {
-        // TODO Having a GUI Application and showing dialog adds much heap
         EditDialog dialog(volume, volumes.keys());
         dialog.exec();
         dialog.deleteLater();

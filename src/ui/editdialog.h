@@ -1,7 +1,7 @@
 //  Licensed under the GNU GENERAL PUBLIC LICENSE Version 2.1. See License in the project root for license information.
 #pragma once
 
-#include <KNotifications/KNotification>
+#include <KNotification>
 #include <QDialog>
 #include <QLabel>
 #include <QLineEdit>

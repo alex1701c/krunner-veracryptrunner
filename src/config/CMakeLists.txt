@@ -1,22 +1,13 @@
-find_package(Qt5 ${QT_MIN_VERSION} REQUIRED CONFIG COMPONENTS Widgets Core)
-find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS Runner ConfigWidgets)
-
-feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
-
 set(kcm_krunner_veracryptrunner_SRCS veracryptrunner_config.cpp ../ui/VeracryptConfigItem.cpp)
 
 ki18n_wrap_ui(kcm_krunner_veracryptrunner_SRCS ../ui/veracryptrunner_config_item.ui)
 ki18n_wrap_ui(kcm_krunner_veracryptrunner_SRCS veracryptrunner_config.ui)
 add_library(kcm_krunner_veracryptrunner2 MODULE ${kcm_krunner_veracryptrunner_SRCS})
 target_link_libraries(kcm_krunner_veracryptrunner2
-        Qt5::Core
-        Qt5::Gui
-        KF5::CoreAddons
-        KF5::ConfigCore
-        KF5::I18n
-        KF5::ConfigWidgets
-        KF5::Runner
-        )
+    Qt::Gui
+    KF${QT_MAJOR_VERSION}::I18n
+    KF${QT_MAJOR_VERSION}::ConfigCore
+    KF${QT_MAJOR_VERSION}::KCMUtils
+)
 
-install(TARGETS kcm_krunner_veracryptrunner2 DESTINATION ${PLUGIN_INSTALL_DIR})
-install(FILES plasma-runner-veracryptrunner2_config.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
+install(TARGETS kcm_krunner_veracryptrunner2 DESTINATION ${KDE_INSTALL_PLUGINDIR})

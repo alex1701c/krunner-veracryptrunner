@@ -2,7 +2,6 @@
 #pragma once
 
 #include "../core/VeracryptVolumeManager.h"
-#include "../ui/VeracryptConfigItem.h"
 #include "ui_veracryptrunner_config.h"
 #include <KCModule>
 #include <KConfigGroup>
@@ -19,7 +18,7 @@ class VeracryptRunnerConfig : public KCModule {
 Q_OBJECT
 
 public:
-    explicit VeracryptRunnerConfig(QWidget *parent = nullptr, const QVariantList &args = QVariantList());
+    explicit VeracryptRunnerConfig(QObject *parent, const QVariantList &args);
 
     ~VeracryptRunnerConfig() override;
 

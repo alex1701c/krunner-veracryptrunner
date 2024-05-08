@@ -14,4 +14,4 @@ X-KDE-PluginInfo-EnabledByDefault=true
 X-Plasma-API=DBus
 X-Plasma-DBusRunner-Service=net.veracryptrunner2
 X-Plasma-DBusRunner-Path=/veracryptrunner
-
+X-KDE-ConfigModule=kcm_krunner_veracryptrunner2

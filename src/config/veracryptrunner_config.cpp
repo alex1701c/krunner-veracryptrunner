@@ -11,9 +11,10 @@ VeracryptRunnerConfigForm::VeracryptRunnerConfigForm(QWidget *parent) : QWidget(
     setupUi(this);
 }
 
-VeracryptRunnerConfig::VeracryptRunnerConfig(QWidget *parent, const QVariantList &args) : KCModule(parent, args) {
-    m_ui = new VeracryptRunnerConfigForm(this);
-    auto *layout = new QGridLayout(this);
+VeracryptRunnerConfig::VeracryptRunnerConfig(QObject *parent, const QVariantList &) : KCModule(parent) {
+
+    m_ui = new VeracryptRunnerConfigForm(widget());
+    auto *layout = new QGridLayout(widget());
     layout->addWidget(m_ui, 0, 0);
 
     connect(m_ui->pushButton, &QPushButton::clicked, this, &VeracryptRunnerConfig::markAsChanged);
@@ -79,7 +80,7 @@ void VeracryptRunnerConfig::defaults() {
 }
 
 void VeracryptRunnerConfig::addVeracryptItem(VeracryptVolume *volume, bool validate) {
-    auto *element = new VeracryptConfigItem(this, volume);
+    auto *element = new VeracryptConfigItem(widget(), volume);
     m_ui->veracryptVolumes->insertWidget(0, element);
     connect(element, &VeracryptConfigItem::changed, this, &VeracryptRunnerConfig::markAsChanged);
     connect(element, &VeracryptConfigItem::confirmedDelete, this, &VeracryptRunnerConfig::confirmedDeleteOfItem);

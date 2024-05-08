@@ -95,13 +95,15 @@ void VeracryptConfigItem::openVolumeDevicePicker() {
     process.waitForFinished(-1);
     const QStringList devices = QString(process.readAllStandardOutput())
             .split(QStringLiteral("\n"), Qt::SkipEmptyParts)
-            .filter(QRegExp(QStringLiteral(R"(.*sd.*)")));
+            .filter(QRegularExpression(QStringLiteral(R"(.*sd.*)")));
     const QString deviceInfo = QInputDialog::getItem(this, QStringLiteral("Select Device"),
                                                      QStringLiteral("Name Label Size Mount Point"), devices);
     if (!deviceInfo.isEmpty()) {
-        QRegExp deviceRegex(QStringLiteral(R"((sd[a-z]\d*))"));
-        deviceRegex.indexIn(deviceInfo);
-        this->devicePushButton->setText(QStringLiteral("/dev/") + deviceRegex.cap(1));
+        const static QRegularExpression deviceRegex(QStringLiteral(R"((sd[a-z]\d*))"));
+        QRegularExpressionMatch match = deviceRegex.match(deviceInfo);
+        if (match.hasMatch()) {
+            this->devicePushButton->setText(QStringLiteral("/dev/") + match.captured(1));
+        }
     }
 }
 
@@ -151,11 +153,9 @@ void VeracryptConfigItem::passFilePicker() {
                                                           QDir::homePath() % QStringLiteral("/.password-store"),
                                                           tr("Pass File (*.gpg)"));
     if (!passPath.isEmpty()) {
-        QRegExp passRegex(QStringLiteral(R"(^.*/\.password-store/(.*)\.gpg$)"));
-        passRegex.indexIn(passPath);
-        const QString res = passRegex.cap(1);
-        if (!res.isEmpty()) {
-            this->passIntegration->setText(res);
+        const static QRegularExpression passRegex(QStringLiteral(R"(^.*/\.password-store/(.+)\.gpg$)"));
+        if (const auto match = passRegex.match(passPath); match.hasMatch()){
+            this->passIntegration->setText(match.captured(1));
         }
     }
 }

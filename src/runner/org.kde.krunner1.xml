@@ -1,0 +1,32 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<!--
+    SPDX-License-Identifier: LGPL-2.0-or-later
+    SPDX-FileCopyrightText: 2017, 2018 David Edmundson <davidedmundson@kde.org>
+    SPDX-FileCopyrightText: 2020 Kai Uwe Broulik <kde@broulik.de>
+    SPDX-FileCopyrightText: 2020-2021 Alexander Lohnau <alexander.lohnau@gmx.de>
+-->
+
+<node>
+  <interface name="org.kde.krunner1">
+    <method name="Teardown"/>
+    <method name="Config">
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap" />
+      <arg name="config" type="a{sv}" direction="out">
+      </arg>
+    </method>
+    <method name="Actions">
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="RemoteActions" />
+      <arg name="matches" type="a(sss)" direction="out">
+      </arg>
+    </method>
+    <method name="Run">
+      <arg name="matchId" type="s" direction="in"/>
+      <arg name="actionId" type="s" direction="in"/>
+    </method>
+    <method name="Match">
+      <arg name="query" type="s" direction="in"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="RemoteMatches"/>
+      <arg name="matches" type="a(sssida{sv})" direction="out"/>
+    </method>
+  </interface>
+</node>
