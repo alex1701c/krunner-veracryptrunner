@@ -1,5 +1,5 @@
-find_package(Qt5 ${QT_MIN_VERSION} REQUIRED CONFIG COMPONENTS Widgets Core Quick QuickWidgets)
-find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS Service Runner TextWidgets ConfigWidgets PlasmaQuick)
+find_package(Qt5 ${QT_MIN_VERSION} REQUIRED CONFIG COMPONENTS Widgets Core)
+find_package(KF5 ${KF_MIN_VERSION} REQUIRED COMPONENTS Runner ConfigWidgets)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
