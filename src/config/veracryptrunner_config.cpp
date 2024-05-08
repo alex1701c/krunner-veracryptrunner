@@ -153,4 +153,5 @@ void VeracryptRunnerConfig::validateDuplicateNames()
     senderItem->nameExistsInfoLabel->setHidden(!names.contains(senderItem->nameLineEdit->text()));
 }
 
+#include "moc_veracryptrunner_config.cpp"
 #include "veracryptrunner_config.moc"

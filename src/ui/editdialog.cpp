@@ -68,3 +68,5 @@ void EditDialog::save()
     config.sync();
     this->close();
 }
+
+#include "moc_editdialog.cpp"

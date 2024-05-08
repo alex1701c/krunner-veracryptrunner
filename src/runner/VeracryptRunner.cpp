@@ -131,3 +131,5 @@ void VeracryptRunner::loadVolumesFromConfig()
     }
     volumes = manager->getVeracryptVolumesMap();
 }
+
+#include "moc_VeracryptRunner.cpp"

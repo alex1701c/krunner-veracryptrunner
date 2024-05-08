@@ -163,3 +163,5 @@ void VeracryptConfigItem::passFilePicker()
         }
     }
 }
+
+#include "moc_VeracryptConfigItem.cpp"
