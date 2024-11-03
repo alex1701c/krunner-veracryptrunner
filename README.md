@@ -7,17 +7,48 @@ Additionally it provides pass integration.
 
 ### Required Dependencies
 
-Debian/Ubuntu:  
-`sudo apt install cmake extra-cmake-modules build-essential libkf5runner-dev libkf5notifications-dev`  
+<details>
+<summary><b>Debian/Ubuntu</b></summary>
 
-openSUSE:  
-`sudo zypper install cmake extra-cmake-modules libQt5Core5 krunner-devel knotifications-devel`  
+Plasma5:  
+```bash install-ubuntu-plasma5
+sudo apt install git cmake extra-cmake-modules build-essential libkf5runner-dev libkf5i18n-dev libkf5kcmutils-dev libkf5dbusaddons-bin
+```
+Plasma6:  
+```bash install-ubuntu-plasma6
+sudo apt install git cmake extra-cmake-modules build-essential libkf6runner-dev libkf6i18n-dev libkf6kcmutils-dev libkf6dbusaddons-bin
+```
 
-Fedora:  
-`sudo dnf install cmake extra-cmake-modules kf5-krunner-devel kf5-knotifications-devel`  
+</details>
 
-Arch (Manjaro):  
-`sudo pacman -S cmake extra-cmake-modules knotifications`  
+<details>
+<summary><b>OpenSUSE</b></summary>
+
+Plasma5:  
+```bash install-opensuse-plasma5
+sudo zypper install git cmake extra-cmake-modules ki18n-devel kcmutils-devel knotifications-devel kdbusaddons-tools
+```
+Plasma6:  
+```bash install-opensuse-plasma6
+sudo zypper install git cmake kf6-extra-cmake-modules kf6-ki18n-devel kf6-kcmutils-devel kf6-kdbusaddons-tools
+```
+
+</details>
+
+<details>
+<summary><b>Fedora</b></summary>
+
+Plasma5:  
+```bash install-fedora-plasma5
+sudo dnf install git cmake extra-cmake-modules kf5-ki18n-devel kf5-kcmutils-devel kf5-knotifications-devel kf5-kdbusaddons
+```
+Plasma6:  
+```bash install-fedora-plasma5
+sudo dnf install git cmake extra-cmake-modules kf6-ki18n-devel kf6-kcmutils-devel kf6-knotifications-devel kf6-dbusaddons
+```
+
+</details>
+
 
 ### Build instructions  
 
@@ -26,13 +57,7 @@ The easiest way to install is:
 ```
 git clone https://github.com/alex1701c/krunner-veracryptrunner
 cd krunner-veracryptrunner/
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release  ..
-make
-make install
-kquitapp5 krunner 2> /dev/null; kstart5 --windowclass krunner krunner > /dev/null 2>&1 &
-./bin/veracryptrunner &
+./install.sh
 ```
 ### Screenshots  
 
