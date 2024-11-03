@@ -44,7 +44,7 @@ sudo dnf install git cmake extra-cmake-modules kf5-ki18n-devel kf5-kcmutils-deve
 ```
 Plasma6:  
 ```bash install-fedora-plasma6
-sudo dnf install git cmake extra-cmake-modules kf6-ki18n-devel kf6-kcmutils-devel kf6-knotifications-devel kf6-dbusaddons
+sudo dnf install git cmake extra-cmake-modules kf6-ki18n-devel kf6-kcmutils-devel kf6-knotifications-devel kf6-kdbusaddons
 ```
 
 </details>
